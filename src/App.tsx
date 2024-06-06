@@ -13,6 +13,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextareaAutosize,
 } from "@mui/material";
 import {
   UKPayDispatchContext,
@@ -21,6 +22,9 @@ import {
 } from "./state/UKPayDispatchContext";
 import { ukPayReducer } from "./state/ukPayReducer";
 import { defaultUKPayState } from "./state/ukPayState";
+import { getDocument } from "pdfjs-dist";
+import processADPPayslip from "./payslip/ADPPayslipProcessor";
+import { PayslipData } from "./payslip/PayslipData";
 
 export default function App() {
   const [state, dispatch] = useReducer(ukPayReducer, {}, defaultUKPayState);
@@ -50,21 +54,40 @@ function UKPayRoot() {
     setShowingResults(true);
   };
 
+  const [payslipsData, setPayslipsData] = useState<ReadonlyArray<PayslipData>>(
+    []
+  );
+
+  async function handleFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
+    const files = event.target.files;
+    if (!files) return;
+
+    const payslipsData: Array<PayslipData> = [];
+
+    for (let i = 0; i < files.length; i++) {
+      payslipsData.push(await processADPPayslip(files[i]));
+    }
+
+    setPayslipsData(payslipsData.sort((a, b) => a.taxPeriod - b.taxPeriod));
+  }
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <Box sx={{ display: "flex", gap: 2 }}>
-        <HalfInputCard periodLabel="H1 2023" yearIdx={0} halfIdx={0} />
+        <input type="file" accept=".pdf" multiple onChange={handleFileUpload} />
+        {/* <HalfInputCard periodLabel="H1 2023" yearIdx={0} halfIdx={0} />
         <HalfInputCard periodLabel="H2 2023" yearIdx={0} halfIdx={1} />
         <HalfInputCard periodLabel="H1 2024" yearIdx={1} halfIdx={0} />
         <BenefitsInputCard />
         <VestsInputCard />
-        <PensionContributionInputCard />
+        <PensionContributionInputCard /> */}
       </Box>
-      <Box sx={{ display: "flex", gap: 2 }}>
+      {/* <Box sx={{ display: "flex", gap: 2 }}>
         <Button variant="contained" color="primary" onClick={showResults}>
           Submit
         </Button>
-      </Box>
+      </Box> */}
+      <TextareaAutosize value={JSON.stringify(payslipsData, null, 2)} />
       {showingResults && <Results />}
     </Box>
   );
