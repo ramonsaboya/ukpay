@@ -6,8 +6,16 @@ import {
 } from "./state/UKPayDispatchContext";
 import { ukPayReducer } from "./state/ukPayReducer";
 import { defaultUKPayState } from "./state/ukPayState";
-import processADPPayslip from "./payslip/ADPPayslipProcessor";
 import UKPayTable from "./UKPayTable";
+import MetaMonthlyCompensation from "./company/MetaMonthlyCompensation";
+import ADPPayslip from "./payslip/ADPPayslip";
+import { Payslip } from "./payslip/Payslip";
+import CompanyMonthlyCompensation from "./company/CompanyMonthlyCompensation";
+
+const COMPANY_MONTHLY_COMPENSATION_CLASS: {
+  new (payslip: Payslip): CompanyMonthlyCompensation;
+} = MetaMonthlyCompensation;
+const PAYSLIP_PROVIDER_CLASS: { new (file: File): Payslip } = ADPPayslip;
 
 export default function App() {
   const [state, dispatch] = useReducer(ukPayReducer, {}, defaultUKPayState);
@@ -38,19 +46,21 @@ function UKPayRoot() {
     const files = event.target.files;
     if (!files) return;
 
-    const promises = [];
+    const payslips = [];
     for (let i = 0; i < files.length; i++) {
-      promises.push(
-        processADPPayslip(files[i]).then((data) => {
-          dispatch({
-            type: "REGISTER_PAY_PERIOD",
-            taxPeriod: data.setup.taxPeriod,
-            data,
-          });
-        })
-      );
+      payslips.push(new PAYSLIP_PROVIDER_CLASS(files[i]));
     }
-    await Promise.all(promises);
+    await Promise.all(payslips.map((payslip) => payslip.process()));
+
+    payslips.forEach((payslip) => {
+      const monthlyCompensation = new COMPANY_MONTHLY_COMPENSATION_CLASS(
+        payslip
+      );
+      dispatch({
+        type: "REGISTER_MONTHLY_COMPENSATION",
+        monthlyCompensation,
+      });
+    });
   }
 
   return (

@@ -6,10 +6,15 @@ export function ukPayReducer(
   action: UKPayAction
 ): UKPayState {
   switch (action.type) {
-    case "REGISTER_PAY_PERIOD":
+    case "REGISTER_MONTHLY_COMPENSATION":
+      const taxPeriodId = action.monthlyCompensation.payslip.period.id;
+
       return {
         ...state,
-        periods: state.periods.set(action.taxPeriod, action.data),
+        companyMonthlyCompensation: state.companyMonthlyCompensation.set(
+          taxPeriodId,
+          action.monthlyCompensation
+        ),
       };
   }
 }

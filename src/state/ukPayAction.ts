@@ -1,7 +1,6 @@
-import { TaxPeriod, TaxPeriodData } from "./ukPayState";
+import CompanyMonthlyCompensation from "../company/CompanyMonthlyCompensation";
 
 export type UKPayAction = {
-  type: "REGISTER_PAY_PERIOD";
-  taxPeriod: TaxPeriod;
-  data: TaxPeriodData;
+  type: "REGISTER_MONTHLY_COMPENSATION";
+  monthlyCompensation: CompanyMonthlyCompensation;
 };
