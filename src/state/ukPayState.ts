@@ -1,34 +1,58 @@
-export type UKPayPeriod = {
-  level: number;
+import { Map, OrderedMap } from "immutable";
+
+export type TaxPeriod = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+
+export type TaxPeriodSetup = {
+  taxCode: string;
+  taxPeriod: TaxPeriod;
+};
+export type TaxPeriodAmounts = {
   salary: number;
+  pensionContribution: number;
+  bonus: number;
+  benefitsInKind: number;
+  wellness: number;
+  transportation: number;
+  rsuTotal: number;
+  rsuTaxOffset: number;
+  rsuExcsRefund: number;
+};
+export type TaxPeriodData = {
+  setup: TaxPeriodSetup;
+  amounts: TaxPeriodAmounts;
 };
 
+export type TaxPeriods = Map<TaxPeriod, TaxPeriodData>;
 export type UKPayState = {
-  periods: ReadonlyArray<ReadonlyArray<UKPayPeriod>>;
-  benefits: { wellness: number; transport: number };
-  vests: {
-    may: number;
-    august: number;
-    november: number;
-    february: number;
-  }
-  pensionContribution: {
-    employeePercentage: number;
-    employerPercentage: number;
-  };
+  periods: TaxPeriods;
 };
 
 type UKPayStateInitializerArgs = {};
 export function defaultUKPayState(args: UKPayStateInitializerArgs): UKPayState {
   return {
-    periods: [[{ level: 1, salary: 0 }, { level: 1, salary: 0 }], [{ level: 1, salary: 0 }]],
-    benefits: { wellness: 0, transport: 0 },
-    vests: {
-      may: 0,
-      august: 0,
-      november: 0,
-      february: 0,
-    },
-    pensionContribution: { employeePercentage: 0, employerPercentage: 0 },
+    periods: OrderedMap(
+      Array(12)
+        .fill(null)
+        .map(
+          (_, i) =>
+            [
+              i + 1,
+              {
+                setup: { taxCode: "", taxPeriod: (i + 1) as TaxPeriod },
+                amounts: {
+                  salary: 0,
+                  pensionContribution: 0,
+                  bonus: 0,
+                  benefitsInKind: 0,
+                  wellness: 0,
+                  transportation: 0,
+                  rsuTotal: 0,
+                  rsuTaxOffset: 0,
+                  rsuExcsRefund: 0,
+                },
+              },
+            ] as [TaxPeriod, TaxPeriodData]
+        )
+    ),
   };
 }

@@ -1,6 +1,8 @@
 import { getDocument } from "pdfjs-dist";
-import { PayslipData, PayslipItems } from "./PayslipData";
 import { TextItem, TextMarkedContent } from "pdfjs-dist/types/src/display/api";
+import { TaxPeriod, TaxPeriodData } from "../state/ukPayState";
+import { getEmployerPensionMatch } from "../meta/metaPensionScheme";
+import { Map } from "immutable";
 
 type PDFToken = {
   str: string;
@@ -17,7 +19,7 @@ const CHAR_DELTA = 0.1;
 
 export default async function processADPPayslip(
   file: File
-): Promise<PayslipData> {
+): Promise<TaxPeriodData> {
   const buffer = await file.arrayBuffer();
   const pdf = await getDocument(buffer).promise;
 
@@ -31,12 +33,6 @@ export default async function processADPPayslip(
   tokens = tokens.flat();
 
   tokens = mergeConnectedTokens(tokens);
-
-  const taxCode =
-    tokens[tokens.findIndex((token) => token.str === "TAX CODE")! + 1].str;
-  const taxPeriod = Number(
-    tokens[tokens.findIndex((token) => token.str === "TAX PERIOD")! + 1].str
-  );
 
   const topTablesTopY =
     tokens.find((token) => token.str === "PAYMENTS")!.y - CHAR_DELTA;
@@ -67,12 +63,59 @@ export default async function processADPPayslip(
     Infinity
   );
 
-  return {
-    taxCode,
-    taxPeriod,
-    earningsItems: extractItems(periodEarnings),
-    benefitsItems: extractItems(periodGrossBenefits),
+  const earnings = extractItems(periodEarnings);
+  const grossBenefits = extractItems(periodGrossBenefits);
+
+  const taxCode =
+    tokens[tokens.findIndex((token) => token.str === "TAX CODE")! + 1].str;
+  const taxPeriod = Number(
+    tokens[tokens.findIndex((token) => token.str === "TAX PERIOD")! + 1].str
+  ) as TaxPeriod;
+
+  const salary =
+    earnings.get("SALARY")! +
+    earnings.get("COMPANY SICKPAY", 0) +
+    earnings.get("PAYABLE SSP", 0);
+  const employeePensionContribution = earnings.get("AE PENSION EE", 0) * -1;
+  const pensionContribution = Math.round(
+    (employeePensionContribution / salary) * 100
+  );
+
+  const bonus = earnings.get("PERFORM BONUS", 0);
+
+  const rsuTotal = grossBenefits.get("RSUS", 0);
+  const rsuTaxOffset = earnings.get("RSU TAX OFFSET", 0);
+  const rsuExcsRefund = earnings.get("RSU EXCS REFUND", 0);
+
+  const benefitsInKind = grossBenefits
+    .entrySeq()
+    .reduce(
+      (acc, [benefit, amount]: [string, number]) =>
+        benefit !== "RSUS" ? acc + amount : acc,
+      0
+    );
+
+  const wellness = earnings.get("WELLNESS", 0);
+  const transportation = earnings.get("TRANSPORTATION", 0);
+
+  const taxPeriodData: TaxPeriodData = {
+    setup: {
+      taxCode,
+      taxPeriod,
+    },
+    amounts: {
+      salary,
+      pensionContribution,
+      bonus,
+      benefitsInKind,
+      wellness,
+      transportation,
+      rsuTotal,
+      rsuTaxOffset,
+      rsuExcsRefund,
+    },
   };
+  return taxPeriodData;
 }
 
 function extractTokens(
@@ -171,23 +214,23 @@ function findTokensInBoundary(
   );
 }
 
-function extractItems(tokens: Array<PDFToken>): PayslipItems {
+function extractItems(tokens: Array<PDFToken>): Map<string, number> {
   return tokens.reduce((acc, curr, idx) => {
     const itemName = curr.cleanStr;
 
-    if (acc.length === 0) {
-      return { [itemName]: 0 };
+    if (acc.size === 0) {
+      return acc.set(itemName, 0);
     }
 
     if (curr.numericForm != null) {
       const prev = tokens[idx - 1];
 
-      return {
-        ...acc,
-        [prev.cleanStr]: acc[prev.cleanStr] + curr.numericForm,
-      };
+      return acc.update(
+        prev.cleanStr,
+        (prevValue) => prevValue! + curr.numericForm!
+      );
     } else {
-      return { ...acc, [itemName]: acc[itemName] ?? 0 };
+      return acc.set(itemName, acc.get(itemName, 0));
     }
-  }, {} as PayslipItems);
+  }, Map() as Map<string, number>);
 }
