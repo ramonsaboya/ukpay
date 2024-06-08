@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/static/css/main.4b797785.css",
-    "main.js": "/static/js/main.b0c9db3b.js",
-    "static/js/453.2945fb52.chunk.js": "/static/js/453.2945fb52.chunk.js",
-    "index.html": "/index.html",
-    "main.4b797785.css.map": "/static/css/main.4b797785.css.map",
-    "main.b0c9db3b.js.map": "/static/js/main.b0c9db3b.js.map",
-    "453.2945fb52.chunk.js.map": "/static/js/453.2945fb52.chunk.js.map"
+    "main.css": "/ramonsaboya.github.io/ukpay/static/css/main.4b797785.css",
+    "main.js": "/ramonsaboya.github.io/ukpay/static/js/main.301ec088.js",
+    "static/js/453.2945fb52.chunk.js": "/ramonsaboya.github.io/ukpay/static/js/453.2945fb52.chunk.js",
+    "index.html": "/ramonsaboya.github.io/ukpay/index.html",
+    "main.4b797785.css.map": "/ramonsaboya.github.io/ukpay/static/css/main.4b797785.css.map",
+    "main.301ec088.js.map": "/ramonsaboya.github.io/ukpay/static/js/main.301ec088.js.map",
+    "453.2945fb52.chunk.js.map": "/ramonsaboya.github.io/ukpay/static/js/453.2945fb52.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.4b797785.css",
-    "static/js/main.b0c9db3b.js"
+    "static/js/main.301ec088.js"
   ]
 }
