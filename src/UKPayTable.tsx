@@ -11,8 +11,6 @@ import {
 import { useUKPayState } from "./state/UKPayDispatchContext";
 import { TAX_PERIODS } from "./taxPeriod";
 import { UKPAY_TABLE_ROWS } from "./ukPayRows";
-import { IncomeTaxRows } from "./hmrc/IncomeTaxRows";
-import { NationalInsuranceRows } from "./hmrc/NationalInsuranceRows";
 
 export default function UKPayTable() {
   return (
@@ -29,8 +27,6 @@ export default function UKPayTable() {
         </TableHead>
         <TableBody>
           <CompensationSummaryRows />
-          <IncomeTaxRows />
-          <NationalInsuranceRows />
         </TableBody>
       </Table>
     </TableContainer>

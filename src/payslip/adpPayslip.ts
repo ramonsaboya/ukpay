@@ -33,41 +33,51 @@ export default class ADPPayslip extends Payslip {
 
     tokens = mergeConnectedTokens(tokens);
 
-    const topTablesTopY = getFirstToken(tokens, "PAYMENTS").y - CHAR_DELTA;
-    const topTablesBottomY =
-      getFirstToken(tokens, "TOTAL PAYMENT").y +
-      CHAR_HEIGHT + // height of the token itself has to be accounted for
-      CHAR_DELTA;
-    const topTablesRightX = getFirstToken(tokens, "DEDUCTIONS").x - CHAR_DELTA;
-
-    const bottomTablesTopY =
-      getFirstToken(tokens, "GROSS BENEFITS").y - CHAR_DELTA;
-    const bottomTablesLeftX =
-      getFirstToken(tokens, "GROSS BENEFITS").x - CHAR_DELTA;
-
-    const periodEarnings = findTokensInBoundary(
-      tokens,
-      topTablesTopY,
-      topTablesBottomY,
-      0,
-      topTablesRightX
-    );
-    const periodGrossBenefits = findTokensInBoundary(
-      tokens,
-      bottomTablesTopY,
-      0,
-      bottomTablesLeftX,
-      Infinity
-    );
-
     this._taxCode = getFirstItemValue(tokens, "TAX CODE");
     this._period = TAX_PERIODS.get(
       Number(getFirstItemValue(tokens, "TAX PERIOD"))
     )!;
 
-    this._earnings = extractItems(periodEarnings);
-    this._grossBenefits = extractItems(periodGrossBenefits);
+    this._earnings = findEarnings(tokens);
+    this._deductions = findDeductions(tokens);
+    this._grossBenefits = findGrossBenefits(tokens);
   }
+}
+
+function findEarnings(tokens: Array<PDFToken>): List<PayslipItem> {
+  const top = getFirstToken(tokens, "PAYMENTS").y - CHAR_DELTA;
+  const bottom =
+    getFirstToken(tokens, "TOTAL PAYMENT").y +
+    CHAR_HEIGHT + // height of the token itself has to be accounted for
+    CHAR_DELTA;
+  const right = getFirstToken(tokens, "DEDUCTIONS").x - CHAR_DELTA;
+
+  const earnings = findTokensInBoundary(tokens, top, bottom, 0, right);
+
+  return extractItems(earnings);
+}
+
+function findDeductions(tokens: Array<PDFToken>): List<PayslipItem> {
+  const top = getFirstToken(tokens, "DEDUCTIONS").y - CHAR_DELTA;
+  const bottom =
+    getFirstToken(tokens, "TOTAL DEDUCTION").y +
+    CHAR_HEIGHT + // height of the token itself has to be accounted for
+    CHAR_DELTA;
+  const left = getFirstToken(tokens, "DEDUCTIONS").x - CHAR_DELTA;
+  const right = getFirstToken(tokens, "YEAR TO DATE").x - CHAR_DELTA;
+
+  const deductions = findTokensInBoundary(tokens, top, bottom, left, right);
+
+  return extractItems(deductions);
+}
+
+function findGrossBenefits(tokens: Array<PDFToken>): List<PayslipItem> {
+  const top = getFirstToken(tokens, "GROSS BENEFITS").y - CHAR_DELTA;
+  const left = getFirstToken(tokens, "GROSS BENEFITS").x - CHAR_DELTA;
+
+  const grossBenefits = findTokensInBoundary(tokens, top, 0, left, Infinity);
+
+  return extractItems(grossBenefits);
 }
 
 function getFirstToken(tokens: Array<PDFToken>, name: string): PDFToken {

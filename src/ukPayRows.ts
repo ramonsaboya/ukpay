@@ -41,16 +41,7 @@ export const UKPAY_TABLE_ROWS: ReadonlyArray<UKPayRow<any>> = [
       compensation.pension.employee.amount +
       compensation.pension.employer.amount
   ),
-  createNumberRow(
-    "RSUs (GBP)",
-    (compensation) => compensation.rsus.rsusTotalValue
-  ),
-  // TODO fix USD conversion rate
-  createNumberRow(
-    "RSUs (USD)",
-    (compensation) => compensation.rsus.rsusTotalValue * 1.25,
-    formatCurrencyUSD
-  ),
+  createNumberRow("RSUs", (compensation) => compensation.rsus.rsusTotalValue),
   createNumberRow(
     "RSU Tax Offset",
     (compensation) => compensation.rsus.rsusWithheld
@@ -63,16 +54,7 @@ export const UKPAY_TABLE_ROWS: ReadonlyArray<UKPayRow<any>> = [
     "Benefits in Kind",
     (compensation) => compensation.benefitsInKind
   ),
-  createNumberRow(
-    "Total payment",
-    (compensation) =>
-      compensation.salary +
-      compensation.bonus +
-      compensation.taxableBenefits +
-      compensation.rsus.rsusWithheld +
-      compensation.rsus.rsusOverwithheldRefund -
-      compensation.pension.employee.amount
-  ),
+  createNumberRow("Total payment", (compensation) => compensation.totalPayment),
   createNumberRow("Taxable pay", (compensation) => compensation.taxablePay),
   createNumberRow(
     "Adjusted income",
@@ -80,6 +62,28 @@ export const UKPAY_TABLE_ROWS: ReadonlyArray<UKPayRow<any>> = [
       compensation.taxablePay +
       compensation.pension.employee.amount +
       compensation.pension.employer.amount
+  ),
+  createNumberRow("Tax paid", (compensation) => compensation.taxPaid),
+  createNumberRow(
+    "National Insurance paid",
+    (compensation) => compensation.nationalInsurancePaid
+  ),
+  createNumberRow(
+    "Net pay",
+    (compensation) =>
+      compensation.totalPayment -
+      compensation.taxPaid -
+      compensation.nationalInsurancePaid
+  ),
+  createNumberRow(
+    "Net income",
+    (compensation) =>
+      compensation.totalPayment -
+      compensation.taxPaid -
+      compensation.nationalInsurancePaid +
+      compensation.rsus.rsusTotalValue -
+      compensation.rsus.rsusWithheld -
+      compensation.rsus.rsusOverwithheldRefund
   ),
 ];
 
@@ -121,15 +125,6 @@ export function formatCurrency(value: number): string {
     style: "currency",
     currency: "GBP",
   });
-}
-
-export function formatCurrencyUSD(value: number): string {
-  return value
-    .toLocaleString("en-US", {
-      style: "currency",
-      currency: "USD",
-    })
-    .replace(/^US/, "");
 }
 
 export function formatPercent(value: number): string {

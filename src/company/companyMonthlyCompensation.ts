@@ -30,5 +30,9 @@ export default abstract class CompanyMonthlyCompensation {
 
   abstract get benefitsInKind(): number;
 
+  abstract get totalPayment(): number;
   abstract get taxablePay(): number;
+
+  abstract get taxPaid(): number;
+  abstract get nationalInsurancePaid(): number;
 }
