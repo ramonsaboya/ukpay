@@ -1,14 +1,13 @@
 {
   "files": {
     "main.css": "/ukpay/static/css/main.4b797785.css",
-    "main.js": "/ukpay/static/js/main.8ec8dddb.js",
-    "static/media/pdf.worker.min.mjs": "/ukpay/static/media/pdf.worker.min.6f80617e31e5a805250a.mjs",
+    "main.js": "/ukpay/static/js/main.adeafaf3.js",
     "index.html": "/ukpay/index.html",
     "main.4b797785.css.map": "/ukpay/static/css/main.4b797785.css.map",
-    "main.8ec8dddb.js.map": "/ukpay/static/js/main.8ec8dddb.js.map"
+    "main.adeafaf3.js.map": "/ukpay/static/js/main.adeafaf3.js.map"
   },
   "entrypoints": [
     "static/css/main.4b797785.css",
-    "static/js/main.8ec8dddb.js"
+    "static/js/main.adeafaf3.js"
   ]
 }
