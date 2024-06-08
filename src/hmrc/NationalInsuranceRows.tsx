@@ -35,8 +35,6 @@ export function NationalInsuranceRows() {
     taxYear
   );
 
-  console.log(nationalInsurance.toObject());
-
   return (
     <>
       {bandsForTaxYear.map((band) => (
