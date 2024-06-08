@@ -4,11 +4,12 @@ import "./index.css";
 import App from "./App";
 
 import { pdfjs } from "react-pdf";
+import workerContent from "./pdf.worker.min.json";
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.mjs",
-  import.meta.url
-).toString();
+let workerBlob = new Blob([workerContent], { type: "text/javascript" });
+let workerBlobURL = URL.createObjectURL(workerBlob);
+
+pdfjs.GlobalWorkerOptions.workerSrc = workerBlobURL;
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
