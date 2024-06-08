@@ -83,6 +83,7 @@ export const UKPAY_TABLE_ROWS: ReadonlyArray<UKPayRow<any>> = [
       compensation.pension.employee.amount +
       compensation.pension.employer.amount
   ),
+  ...createIncomeTaxRows(taxYear2023_24),
 ];
 
 type ValueFn<T> = (compensation: CompanyMonthlyCompensation) => T;
