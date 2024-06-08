@@ -12,11 +12,12 @@ import { useUKPayState } from "./state/UKPayDispatchContext";
 import { TAX_PERIODS } from "./taxPeriod";
 import { UKPAY_TABLE_ROWS } from "./ukPayRows";
 import { IncomeTaxRows } from "./hmrc/IncomeTaxRows";
+import { NationalInsuranceRows } from "./hmrc/NationalInsuranceRows";
 
 export default function UKPayTable() {
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }}>
+      <Table sx={{ minWidth: 650 }} size="small">
         <TableHead>
           <TableRow>
             <TableCell></TableCell>
@@ -29,6 +30,7 @@ export default function UKPayTable() {
         <TableBody>
           <CompensationSummaryRows />
           <IncomeTaxRows />
+          <NationalInsuranceRows />
         </TableBody>
       </Table>
     </TableContainer>
