@@ -1,34 +1,16 @@
-export type UKPayPeriod = {
-  level: number;
-  salary: number;
-};
+import { Map } from "immutable";
+import CompanyMonthlyCompensation from "../company/companyMonthlyCompensation";
 
+export type CompanyCompensation = Map<number, CompanyMonthlyCompensation>;
 export type UKPayState = {
-  periods: ReadonlyArray<ReadonlyArray<UKPayPeriod>>;
-  benefits: { wellness: number; transport: number };
-  vests: {
-    may: number;
-    august: number;
-    november: number;
-    february: number;
-  }
-  pensionContribution: {
-    employeePercentage: number;
-    employerPercentage: number;
-  };
+  companyCompensation: CompanyCompensation;
 };
 
 type UKPayStateInitializerArgs = {};
-export function defaultUKPayState(args: UKPayStateInitializerArgs): UKPayState {
+export function defaultUKPayState(
+  _args: UKPayStateInitializerArgs
+): UKPayState {
   return {
-    periods: [[{ level: 1, salary: 0 }, { level: 1, salary: 0 }], [{ level: 1, salary: 0 }]],
-    benefits: { wellness: 0, transport: 0 },
-    vests: {
-      may: 0,
-      august: 0,
-      november: 0,
-      february: 0,
-    },
-    pensionContribution: { employeePercentage: 0, employerPercentage: 0 },
+    companyCompensation: Map(),
   };
 }
