@@ -11,7 +11,7 @@ export function ukPayReducer(
 
       return {
         ...state,
-        companyMonthlyCompensation: state.companyMonthlyCompensation.set(
+        companyCompensation: state.companyCompensation.set(
           taxPeriodId,
           action.monthlyCompensation
         ),

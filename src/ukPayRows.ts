@@ -1,6 +1,4 @@
 import CompanyMonthlyCompensation from "./company/companyMonthlyCompensation";
-import { createIncomeTaxRows } from "./hmrc/incomeTax";
-import taxYear2023_24 from "./hmrc/tax_year/taxYear2023_24";
 
 export const UKPAY_TABLE_ROWS: ReadonlyArray<UKPayRow<any>> = [
   createNumberRow("Salary", (compensation) => compensation.salary),
@@ -83,7 +81,6 @@ export const UKPAY_TABLE_ROWS: ReadonlyArray<UKPayRow<any>> = [
       compensation.pension.employee.amount +
       compensation.pension.employer.amount
   ),
-  ...createIncomeTaxRows(taxYear2023_24),
 ];
 
 type ValueFn<T> = (compensation: CompanyMonthlyCompensation) => T;
@@ -118,14 +115,15 @@ export function createNumberRow(
   return createRow(label, value, formatter, aggregate);
 }
 
-function formatCurrency(value: number): string {
+// TODO should these functions be somewhere else?
+export function formatCurrency(value: number): string {
   return value.toLocaleString("en-GB", {
     style: "currency",
     currency: "GBP",
   });
 }
 
-function formatCurrencyUSD(value: number): string {
+export function formatCurrencyUSD(value: number): string {
   return value
     .toLocaleString("en-US", {
       style: "currency",
@@ -134,7 +132,7 @@ function formatCurrencyUSD(value: number): string {
     .replace(/^US/, "");
 }
 
-function formatPercent(value: number): string {
+export function formatPercent(value: number): string {
   return `${value.toFixed(0)}%`;
 }
 

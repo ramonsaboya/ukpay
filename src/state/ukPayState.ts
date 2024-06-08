@@ -1,8 +1,9 @@
 import { Map } from "immutable";
 import CompanyMonthlyCompensation from "../company/companyMonthlyCompensation";
 
+export type CompanyCompensation = Map<number, CompanyMonthlyCompensation>;
 export type UKPayState = {
-  companyMonthlyCompensation: Map<number, CompanyMonthlyCompensation>;
+  companyCompensation: CompanyCompensation;
 };
 
 type UKPayStateInitializerArgs = {};
@@ -10,6 +11,6 @@ export function defaultUKPayState(
   _args: UKPayStateInitializerArgs
 ): UKPayState {
   return {
-    companyMonthlyCompensation: Map(),
+    companyCompensation: Map(),
   };
 }
