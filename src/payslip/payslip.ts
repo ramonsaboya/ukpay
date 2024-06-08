@@ -30,6 +30,11 @@ export abstract class Payslip {
     return this._earnings;
   }
 
+  protected _deductions!: List<PayslipItem>;
+  get deductions() {
+    return this._deductions;
+  }
+
   protected _grossBenefits!: List<PayslipItem>;
   get grossBenefits() {
     return this._grossBenefits;

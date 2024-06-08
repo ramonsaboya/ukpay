@@ -86,6 +86,27 @@ export default class MetaMonthlyCompensation extends CompanyMonthlyCompensation 
     );
   }
 
+  get totalPayment(): number {
+    return (
+      this.salary +
+      this.bonus +
+      this.taxableBenefits +
+      this.rsus.rsusWithheld +
+      this.rsus.rsusOverwithheldRefund -
+      this.pension.employee.amount
+    );
+  }
+
+  get taxPaid(): number {
+    return this.payslip.deductions.find(({ name }) => name === "TAX PAID")!
+      .amount;
+  }
+
+  get nationalInsurancePaid(): number {
+    return this.payslip.deductions.find(({ name }) => name === "EMPLOYEE NIC")!
+      .amount;
+  }
+
   private getEmployerPensionMatch(employeeContribution: number): number {
     switch (employeeContribution) {
       case 0:
