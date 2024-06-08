@@ -3,21 +3,21 @@ import { Box } from "@mui/material";
 import {
   UKPayDispatchContext,
   useUKPayDispatch,
-} from "./state/UKPayDispatchContext";
-import { ukPayReducer } from "./state/ukPayReducer";
-import { defaultUKPayState } from "./state/ukPayState";
-import UKPayTable from "./UKPayTable";
-import { Payslip } from "./payslip/payslip";
-import CompanyMonthlyCompensation from "./company/companyMonthlyCompensation";
-import MetaMonthlyCompensation from "./company/metaMonthlyCompensation";
-import ADPPayslip from "./payslip/adpPayslip";
+} from "../state/UKPayDispatchContext";
+import { ukPayReducer } from "../state/ukPayReducer";
+import { defaultUKPayState } from "../state/ukPayState";
+import UKPayTable from "../UKPayTable";
+import { Payslip } from "../payslip/payslip";
+import CompanyMonthlyCompensation from "../company/companyMonthlyCompensation";
+import MetaMonthlyCompensation from "../company/metaMonthlyCompensation";
+import ADPPayslip from "../payslip/adpPayslip";
 
 const COMPANY_MONTHLY_COMPENSATION_CLASS: {
   new (payslip: Payslip): CompanyMonthlyCompensation;
 } = MetaMonthlyCompensation;
 const PAYSLIP_PROVIDER_CLASS: { new (file: File): Payslip } = ADPPayslip;
 
-export default function App() {
+export default function PastTaxYear() {
   const [state, dispatch] = useReducer(ukPayReducer, {}, defaultUKPayState);
 
   return (
