@@ -1,4 +1,6 @@
 import CompanyMonthlyCompensation from "./company/companyMonthlyCompensation";
+import { createIncomeTaxRows } from "./hmrc/incomeTax";
+import taxYear2023_24 from "./hmrc/tax_year/taxYear2023_24";
 
 export const UKPAY_TABLE_ROWS: ReadonlyArray<UKPayRow<any>> = [
   createNumberRow("Salary", (compensation) => compensation.salary),
