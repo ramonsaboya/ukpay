@@ -1,4 +1,4 @@
-import { Payslip } from "../payslip/Payslip";
+import { Payslip } from "../payslip/payslip";
 
 export type PensionContribution = {
   employee: {
@@ -11,6 +11,12 @@ export type PensionContribution = {
   };
 };
 
+export type RSUData = {
+  rsusTotalValue: number;
+  rsusWithheld: number;
+  rsusOverwithheldRefund: number;
+};
+
 export default abstract class CompanyMonthlyCompensation {
   constructor(public payslip: Payslip) {}
 
@@ -19,4 +25,10 @@ export default abstract class CompanyMonthlyCompensation {
   abstract get taxableBenefits(): number;
 
   abstract get pension(): PensionContribution;
+
+  abstract get rsus(): RSUData;
+
+  abstract get benefitsInKind(): number;
+
+  abstract get taxablePay(): number;
 }

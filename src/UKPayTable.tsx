@@ -28,6 +28,7 @@ export default function UKPayTable() {
           </TableRow>
         </TableHead>
         <TableBody>
+          {/* TODO separate the compensation summary fields and have the income tax as a different set of rows in another file */}
           {UKPAY_TABLE_ROWS.map(({ label, value, formatter, aggregate }) => (
             <TableRow key={label}>
               <TableCell>{label}</TableCell>

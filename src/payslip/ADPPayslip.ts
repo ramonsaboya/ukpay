@@ -1,4 +1,4 @@
-import { Payslip, PayslipItem } from "./Payslip";
+import { Payslip, PayslipItem } from "./payslip";
 import { TAX_PERIODS } from "../taxPeriod";
 import { getDocument } from "pdfjs-dist";
 import { Map, List } from "immutable";
@@ -33,19 +33,17 @@ export default class ADPPayslip extends Payslip {
 
     tokens = mergeConnectedTokens(tokens);
 
-    const topTablesTopY =
-      getFirstItemValueToken(tokens, "PAYMENTS").y - CHAR_DELTA;
+    const topTablesTopY = getFirstToken(tokens, "PAYMENTS").y - CHAR_DELTA;
     const topTablesBottomY =
-      getFirstItemValueToken(tokens, "TOTAL PAYMENT").y +
+      getFirstToken(tokens, "TOTAL PAYMENT").y +
       CHAR_HEIGHT + // height of the token itself has to be accounted for
       CHAR_DELTA;
-    const topTablesRightX =
-      getFirstItemValueToken(tokens, "DEDUCTIONS").x - CHAR_DELTA;
+    const topTablesRightX = getFirstToken(tokens, "DEDUCTIONS").x - CHAR_DELTA;
 
     const bottomTablesTopY =
-      getFirstItemValueToken(tokens, "GROSS BENEFITS").y - CHAR_DELTA;
+      getFirstToken(tokens, "GROSS BENEFITS").y - CHAR_DELTA;
     const bottomTablesLeftX =
-      getFirstItemValueToken(tokens, "GROSS BENEFITS").x - CHAR_DELTA;
+      getFirstToken(tokens, "GROSS BENEFITS").x - CHAR_DELTA;
 
     const periodEarnings = findTokensInBoundary(
       tokens,
@@ -62,9 +60,9 @@ export default class ADPPayslip extends Payslip {
       Infinity
     );
 
-    this._taxCode = getFirstItemValueToken(tokens, "TAX CODE").cleanStr;
+    this._taxCode = getFirstItemValue(tokens, "TAX CODE");
     this._period = TAX_PERIODS.get(
-      Number(getFirstItemValueToken(tokens, "TAX PERIOD").cleanStr)
+      Number(getFirstItemValue(tokens, "TAX PERIOD"))
     )!;
 
     this._earnings = extractItems(periodEarnings);
@@ -72,11 +70,13 @@ export default class ADPPayslip extends Payslip {
   }
 }
 
-function getFirstItemValueToken(
-  tokens: Array<PDFToken>,
-  name: string
-): PDFToken {
-  return tokens[tokens.findIndex((token) => token.cleanStr === name)! + 1];
+function getFirstToken(tokens: Array<PDFToken>, name: string): PDFToken {
+  return tokens.find((token) => token.cleanStr === name)!;
+}
+
+function getFirstItemValue(tokens: Array<PDFToken>, name: string): string {
+  return tokens[tokens.findIndex((token) => token.cleanStr === name)! + 1]
+    .cleanStr;
 }
 
 function extractTokens(

@@ -1,4 +1,4 @@
-import CompanyMonthlyCompensation from "../company/CompanyMonthlyCompensation";
+import CompanyMonthlyCompensation from "../company/companyMonthlyCompensation";
 
 export type UKPayAction = {
   type: "REGISTER_MONTHLY_COMPENSATION";

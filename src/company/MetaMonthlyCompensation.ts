@@ -1,6 +1,7 @@
 import CompanyMonthlyCompensation, {
   PensionContribution,
-} from "./CompanyMonthlyCompensation";
+  RSUData,
+} from "./companyMonthlyCompensation";
 
 export default class MetaMonthlyCompensation extends CompanyMonthlyCompensation {
   get salary(): number {
@@ -48,6 +49,41 @@ export default class MetaMonthlyCompensation extends CompanyMonthlyCompensation 
         percentage: employerMatch,
       },
     };
+  }
+
+  get rsus(): RSUData {
+    return {
+      rsusTotalValue:
+        this.payslip.grossBenefits.find(({ name }) => name === "RSUS")
+          ?.amount ?? 0,
+      rsusWithheld:
+        this.payslip.earnings.find(({ name }) => name === "RSU TAX OFFSET")
+          ?.amount ?? 0,
+      rsusOverwithheldRefund:
+        this.payslip.earnings.find(({ name }) => name === "RSU EXCS REFUND")
+          ?.amount ?? 0,
+    };
+  }
+
+  get benefitsInKind(): number {
+    return this.payslip.grossBenefits.reduce((acc, { name, amount }) => {
+      if (name !== "RSUS") {
+        return acc + amount;
+      } else {
+        return acc;
+      }
+    }, 0);
+  }
+
+  get taxablePay(): number {
+    return (
+      this.salary +
+      this.bonus +
+      this.taxableBenefits +
+      this.rsus.rsusTotalValue +
+      this.benefitsInKind -
+      this.pension.employee.amount
+    );
   }
 
   private getEmployerPensionMatch(employeeContribution: number): number {

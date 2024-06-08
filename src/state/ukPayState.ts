@@ -1,5 +1,5 @@
 import { Map } from "immutable";
-import CompanyMonthlyCompensation from "../company/CompanyMonthlyCompensation";
+import CompanyMonthlyCompensation from "../company/companyMonthlyCompensation";
 
 export type UKPayState = {
   companyMonthlyCompensation: Map<number, CompanyMonthlyCompensation>;

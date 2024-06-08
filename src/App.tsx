@@ -7,10 +7,10 @@ import {
 import { ukPayReducer } from "./state/ukPayReducer";
 import { defaultUKPayState } from "./state/ukPayState";
 import UKPayTable from "./UKPayTable";
-import MetaMonthlyCompensation from "./company/MetaMonthlyCompensation";
-import ADPPayslip from "./payslip/ADPPayslip";
-import { Payslip } from "./payslip/Payslip";
-import CompanyMonthlyCompensation from "./company/CompanyMonthlyCompensation";
+import { Payslip } from "./payslip/payslip";
+import CompanyMonthlyCompensation from "./company/companyMonthlyCompensation";
+import MetaMonthlyCompensation from "./company/metaMonthlyCompensation";
+import ADPPayslip from "./payslip/adpPayslip";
 
 const COMPANY_MONTHLY_COMPENSATION_CLASS: {
   new (payslip: Payslip): CompanyMonthlyCompensation;
