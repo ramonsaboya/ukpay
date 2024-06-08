@@ -11,13 +11,13 @@ import {
 import { useUKPayState } from "./state/UKPayDispatchContext";
 import { TAX_PERIODS } from "./taxPeriod";
 import { UKPAY_TABLE_ROWS } from "./ukPayRows";
+import { IncomeTaxRows } from "./hmrc/IncomeTaxRows";
+import { NationalInsuranceRows } from "./hmrc/NationalInsuranceRows";
 
 export default function UKPayTable() {
-  const { companyMonthlyCompensation } = useUKPayState();
-
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }}>
+      <Table sx={{ minWidth: 650 }} size="small">
         <TableHead>
           <TableRow>
             <TableCell></TableCell>
@@ -28,38 +28,46 @@ export default function UKPayTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {/* TODO separate the compensation summary fields and have the income tax as a different set of rows in another file */}
-          {UKPAY_TABLE_ROWS.map(({ label, value, formatter, aggregate }) => (
-            <TableRow key={label}>
-              <TableCell>{label}</TableCell>
-
-              {TAX_PERIODS.valueSeq().map(({ id: taxPeriodId, month }) => {
-                const compensation =
-                  companyMonthlyCompensation.get(taxPeriodId);
-                const reactKey = `${label}-${month}`;
-
-                if (compensation == null) {
-                  return <TableCell key={reactKey}>{formatter(0)}</TableCell>;
-                }
-
-                return (
-                  <TableCell key={reactKey} align="right">
-                    {formatter(value(compensation))}
-                  </TableCell>
-                );
-              })}
-
-              <TableCell align="right">
-                {aggregate != null
-                  ? formatter(
-                      aggregate(companyMonthlyCompensation.valueSeq().toArray())
-                    )
-                  : ""}
-              </TableCell>
-            </TableRow>
-          ))}
+          <CompensationSummaryRows />
+          <IncomeTaxRows />
+          <NationalInsuranceRows />
         </TableBody>
       </Table>
     </TableContainer>
+  );
+}
+
+function CompensationSummaryRows() {
+  const { companyCompensation } = useUKPayState();
+
+  return (
+    <>
+      {UKPAY_TABLE_ROWS.map(({ label, value, formatter, aggregate }) => (
+        <TableRow key={label}>
+          <TableCell>{label}</TableCell>
+
+          {TAX_PERIODS.valueSeq().map(({ id: taxPeriodId, month }) => {
+            const compensation = companyCompensation.get(taxPeriodId);
+            const reactKey = `${label}-${month}`;
+
+            if (compensation == null) {
+              return <TableCell key={reactKey}>{formatter(0)}</TableCell>;
+            }
+
+            return (
+              <TableCell key={reactKey} align="right">
+                {formatter(value(compensation))}
+              </TableCell>
+            );
+          })}
+
+          <TableCell align="right">
+            {aggregate != null
+              ? formatter(aggregate(companyCompensation.valueSeq().toArray()))
+              : ""}
+          </TableCell>
+        </TableRow>
+      ))}
+    </>
   );
 }

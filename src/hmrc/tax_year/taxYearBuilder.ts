@@ -8,6 +8,7 @@ export type BandWithThreshold = {
 export type TaxYearMonth = {
   personalAllowance: number;
   taxRates: Array<BandWithThreshold>;
+  nationalInsuranceRates: Array<BandWithThreshold>;
 };
 export type TaxYear = [
   TaxYearMonth,
