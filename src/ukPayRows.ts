@@ -1,3 +1,5 @@
+import { formatCurrency } from "src/compensation/formatters";
+
 export const UKPAY_TABLE_ROWS: ReadonlyArray<UKPayRow<any>> = [
   createNumberRow("Salary", (compensation) => compensation.salary),
   createNumberRow("Bonus", (compensation) => compensation.bonus),
@@ -118,12 +120,6 @@ export function createNumberRow(
 }
 
 // TODO should these functions be somewhere else?
-export function formatCurrency(value: number): string {
-  return value.toLocaleString("en-GB", {
-    style: "currency",
-    currency: "GBP",
-  });
-}
 
 export function formatPercent(value: number): string {
   return `${value.toFixed(0)}%`;

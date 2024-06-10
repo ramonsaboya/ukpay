@@ -38,28 +38,37 @@ function CompensationSummaryRows() {
 
   return (
     <>
-      {compensationElements.map(({ rowLabel, type }) => (
-        <TableRow key={rowLabel}>
-          <TableCell>{rowLabel}</TableCell>
+      {compensationElements.map(({ rowLabel, type, formatter, aggregate }) => {
+        const monthlyValues = calculatedCompensationValues
+          .map((monthValues) => monthValues.get(type))
+          .valueSeq()
+          .toArray();
 
-          {TAX_MONTHS.map((taxMonth) => {
-            const compensation = calculatedCompensationValues.get(taxMonth);
-            const reactKey = `${rowLabel}-${taxMonthLabel(taxMonth)}`;
+        return (
+          <TableRow key={rowLabel}>
+            <TableCell>{rowLabel}</TableCell>
 
-            if (compensation == null) {
-              return <TableCell key={reactKey}>{0}</TableCell>;
-            }
+            {TAX_MONTHS.map((taxMonth) => {
+              const compensation = calculatedCompensationValues.get(taxMonth);
+              const reactKey = `${rowLabel}-${taxMonthLabel(taxMonth)}`;
 
-            return (
-              <TableCell key={reactKey} align="right">
-                {compensation.get(type)}
-              </TableCell>
-            );
-          })}
+              if (compensation == null) {
+                return <TableCell key={reactKey}>{formatter(0)}</TableCell>;
+              }
 
-          <TableCell align="right">{0}</TableCell>
-        </TableRow>
-      ))}
+              return (
+                <TableCell key={reactKey} align="right">
+                  {formatter(compensation.get(type))}
+                </TableCell>
+              );
+            })}
+
+            <TableCell align="right">
+              {formatter(aggregate(monthlyValues))}
+            </TableCell>
+          </TableRow>
+        );
+      })}
     </>
   );
 }

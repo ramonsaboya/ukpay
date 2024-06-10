@@ -25,8 +25,12 @@ export default class PayslipItemList {
     }
   }
 
-  get(name: string, defaultValue?: PayslipItem) {
-    return this._items.get(name) ?? defaultValue;
+  get(name: string): number | undefined {
+    return this._items.get(name)?.amount;
+  }
+
+  getOrDefault(name: string, defaultValue: number): number {
+    return this._items.get(name)?.amount ?? defaultValue;
   }
 
   sum(...names: string[]) {

@@ -13,6 +13,7 @@ import TaxMonth from "src/taxMonth";
 
 export enum CompensationElementType {
   SALARY,
+  BONUS,
 }
 
 export default abstract class CompensationElement<T> {
@@ -20,6 +21,8 @@ export default abstract class CompensationElement<T> {
   public abstract readonly dependencies: Set<CompensationElementType>;
 
   public abstract readonly rowLabel: string;
+  public abstract readonly formatter: (value: T) => string;
+  public abstract readonly aggregate: (values: T[]) => T;
 
   public calculate(
     taxMonth: TaxMonth,

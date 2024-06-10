@@ -1,4 +1,5 @@
 import { List, Map } from "immutable";
+import MetaBonus from "src/company/meta/metaBonus";
 import MetaSalary from "src/company/meta/metaSalary";
 import CompensationElement, {
   CompensationElementType,
@@ -28,7 +29,7 @@ export function defaultUKPayState(
 ): UKPayState {
   return {
     incomeSources: Map(),
-    compensationElements: List([new MetaSalary()]),
+    compensationElements: List([new MetaSalary(), new MetaBonus()]),
     calculatedCompensationValues: Map(),
   };
 }
