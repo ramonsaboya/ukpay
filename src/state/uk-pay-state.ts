@@ -5,6 +5,9 @@ import MetaPensionEmployeeAmount from "src/company/meta/meta-pension-employee-am
 import MetaPensionEmployeePercentage from "src/company/meta/meta-pension-employee-percentage";
 import MetaPensionEmployerAmount from "src/company/meta/meta-pension-employer-amount";
 import MetaPensionEmployerPercentage from "src/company/meta/meta-pension-employer-percentage";
+import MetaRSUOverwithheldRefund from "src/company/meta/meta-rsu-overwithheld-refund";
+import MetaRSUTaxOffset from "src/company/meta/meta-rsu-tax-offset";
+import MetaRSUVest from "src/company/meta/meta-rsu-vest";
 import MetaSalary from "src/company/meta/meta-salary";
 import MetaTaxableBenefits from "src/company/meta/meta-taxable-benefits";
 import CompensationElement, {
@@ -44,6 +47,9 @@ export function defaultUKPayState(
       new MetaPensionEmployeePercentage(),
       new MetaPensionEmployerAmount(),
       new MetaPensionEmployerPercentage(),
+      new MetaRSUVest(),
+      new MetaRSUTaxOffset(),
+      new MetaRSUOverwithheldRefund(),
     ]),
     calculatedCompensationValues: Map(),
   };

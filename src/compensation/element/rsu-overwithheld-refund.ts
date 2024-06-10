@@ -4,10 +4,10 @@ import CompensationElement, {
 } from "src/compensation/element/compensation-element";
 import { formatCurrency } from "src/compensation/formatters";
 
-export default abstract class TaxableBenefits extends CompensationElement<number> {
-  type = CompensationElementType.TAXABLE_BENEFITS;
+export default abstract class RSUOverwithheldRefund extends CompensationElement<number> {
+  type = CompensationElementType.RSU_OVERWITHHELD_REFUND;
 
-  rowLabel = "Taxable benefits";
+  rowLabel = "RSU overwithheld refund";
   formatter = formatCurrency;
   aggregate = sum;
 }

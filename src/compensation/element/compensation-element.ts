@@ -20,6 +20,9 @@ export enum CompensationElementType {
   PENSION_EMPLOYEE_PERCENTAGE,
   PENSION_EMPLOYER_AMOUNT,
   PENSION_EMPLOYER_PERCENTAGE,
+  RSU_VEST,
+  RSU_TAX_OFFSET,
+  RSU_OVERWITHHELD_REFUND,
 }
 
 export default abstract class CompensationElement<T> {
