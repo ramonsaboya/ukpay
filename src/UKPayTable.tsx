@@ -64,7 +64,7 @@ function CompensationSummaryRows() {
             })}
 
             <TableCell align="right">
-              {formatter(aggregate(monthlyValues))}
+              {aggregate != null ? formatter(aggregate(monthlyValues)) : ""}
             </TableCell>
           </TableRow>
         );

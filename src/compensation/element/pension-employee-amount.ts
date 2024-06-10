@@ -4,10 +4,10 @@ import CompensationElement, {
 } from "src/compensation/element/compensation-element";
 import { formatCurrency } from "src/compensation/formatters";
 
-export default abstract class Salary extends CompensationElement<number> {
-  type = CompensationElementType.SALARY;
+export default abstract class PensionEmployeeAmount extends CompensationElement<number> {
+  type = CompensationElementType.PENSION_EMPLOYEE_AMOUNT;
 
-  rowLabel = "Salary";
+  rowLabel = "Pension - Employee";
   formatter = formatCurrency;
   aggregate = sum;
 }

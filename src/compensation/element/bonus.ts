@@ -6,7 +6,6 @@ import { formatCurrency } from "src/compensation/formatters";
 
 export default abstract class Bonus extends CompensationElement<number> {
   type = CompensationElementType.BONUS;
-  dependencies = new Set<CompensationElementType>();
 
   rowLabel = "Bonus";
   formatter = formatCurrency;

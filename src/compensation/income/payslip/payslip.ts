@@ -10,8 +10,8 @@ import TaxMonth from "src/taxMonth";
 export interface IPayslip<T> {
   fromPayslip(
     payslip: Payslip,
-    taxMonth: TaxMonth,
     currentMonthValues: CalculatedMonthCompensationValuesByElementType,
+    taxMonth: TaxMonth,
     previousMonthsValues: CalculatedCompensationValuesByMonth
   ): T;
 }
