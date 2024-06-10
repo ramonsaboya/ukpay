@@ -33,7 +33,7 @@ export default class PayslipItemList {
     return this._items.get(name)?.amount ?? defaultValue;
   }
 
-  sum(...names: string[]) {
+  sum(...names: string[]): number {
     const values = Array.from(this._items.values());
     return values.reduce((acc, { name, amount }) => {
       if (names.includes(name)) {
@@ -41,5 +41,12 @@ export default class PayslipItemList {
       }
       return acc;
     }, 0);
+  }
+
+  all(): number {
+    return Array.from(this._items.values()).reduce(
+      (acc, { amount }) => acc + amount,
+      0
+    );
   }
 }

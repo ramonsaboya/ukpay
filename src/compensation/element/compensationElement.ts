@@ -14,6 +14,8 @@ import TaxMonth from "src/taxMonth";
 export enum CompensationElementType {
   SALARY,
   BONUS,
+  TAXABLE_BENEFITS,
+  BENEFITS_IN_KIND,
 }
 
 export default abstract class CompensationElement<T> {

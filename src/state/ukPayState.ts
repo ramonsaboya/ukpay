@@ -1,6 +1,8 @@
 import { List, Map } from "immutable";
+import MetaBenefitsInKind from "src/company/meta/metaBenefitsInKind";
 import MetaBonus from "src/company/meta/metaBonus";
 import MetaSalary from "src/company/meta/metaSalary";
+import MetaTaxableBenefits from "src/company/meta/metaTaxableBenefits";
 import CompensationElement, {
   CompensationElementType,
 } from "src/compensation/element/compensationElement";
@@ -29,7 +31,12 @@ export function defaultUKPayState(
 ): UKPayState {
   return {
     incomeSources: Map(),
-    compensationElements: List([new MetaSalary(), new MetaBonus()]),
+    compensationElements: List([
+      new MetaSalary(),
+      new MetaBonus(),
+      new MetaTaxableBenefits(),
+      new MetaBenefitsInKind(),
+    ]),
     calculatedCompensationValues: Map(),
   };
 }
