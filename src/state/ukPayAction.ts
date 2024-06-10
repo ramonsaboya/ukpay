@@ -1,6 +1,6 @@
-import CompanyMonthlyCompensation from "../company/companyMonthlyCompensation";
+import IncomeSource from "../compensation/income/incomeSource";
 
 export type UKPayAction = {
-  type: "REGISTER_MONTHLY_COMPENSATION";
-  monthlyCompensation: CompanyMonthlyCompensation;
+  type: "REGISTER_INCOME_SOURCE";
+  incomeSource: IncomeSource;
 };

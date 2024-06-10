@@ -1,9 +1,25 @@
-import { Map } from "immutable";
-import CompanyMonthlyCompensation from "../company/companyMonthlyCompensation";
+import { List, Map } from "immutable";
+import IncomeSource from "../compensation/income/incomeSource";
+import TaxMonth from "../taxMonth";
+import CompensationElement, {
+  CompensationElementType,
+} from "../compensation/element/compensationElement";
+import MetaSalary from "../company/meta/metaSalary";
 
-export type CompanyCompensation = Map<number, CompanyMonthlyCompensation>;
+export type IncomeSourcesByMonth = Map<TaxMonth, List<IncomeSource>>;
+export type CompensationElements = List<CompensationElement<any>>;
+export type CalculatedMonthCompensationValuesByElementType = Map<
+  CompensationElementType,
+  any
+>;
+export type CalculatedCompensationValuesByMonth = Map<
+  TaxMonth,
+  CalculatedMonthCompensationValuesByElementType
+>;
 export type UKPayState = {
-  companyCompensation: CompanyCompensation;
+  incomeSources: IncomeSourcesByMonth;
+  compensationElements: CompensationElements;
+  calculatedCompensationValues: CalculatedCompensationValuesByMonth;
 };
 
 type UKPayStateInitializerArgs = {};
@@ -11,6 +27,8 @@ export function defaultUKPayState(
   _args: UKPayStateInitializerArgs
 ): UKPayState {
   return {
-    companyCompensation: Map(),
+    incomeSources: Map(),
+    compensationElements: List([new MetaSalary()]),
+    calculatedCompensationValues: Map(),
   };
 }

@@ -1,3 +1,5 @@
+import TaxMonth from "../../taxMonth";
+
 export enum IncomeSourceType {
   PAYSLIP,
   SCHWAB_REPORT,
@@ -9,4 +11,9 @@ export enum IncomeSourceType {
 export default abstract class IncomeSource {
   public abstract readonly type: IncomeSourceType;
   public abstract readonly order: number;
+
+  protected _taxMonth!: TaxMonth;
+  get taxMonth() {
+    return this._taxMonth;
+  }
 }

@@ -1,8 +1,9 @@
-import { Payslip, PayslipItem } from "./payslip";
-import { TAX_PERIODS } from "../taxPeriod";
 import { getDocument } from "pdfjs-dist";
-import { Map, List } from "immutable";
+import { Map } from "immutable";
 import { TextItem, TextMarkedContent } from "pdfjs-dist/types/src/display/api";
+import Payslip from "./payslip";
+import PayslipItemList from "./paylistItemList";
+import TaxMonth, { taxMonthFromPeriod } from "../../../taxMonth";
 
 type PDFToken = {
   originalStr_DO_NOT_USE: string;
@@ -18,8 +19,23 @@ const CHAR_HEIGHT = 8;
 const CHAR_DELTA = 0.1;
 
 export default class ADPPayslip extends Payslip {
-  public async process(): Promise<void> {
-    const buffer = await this._file.arrayBuffer();
+  private constructor(
+    taxMonth: TaxMonth,
+    taxCode: string,
+    earnings: PayslipItemList,
+    deductions: PayslipItemList,
+    grossBenefits: PayslipItemList
+  ) {
+    super();
+    this._taxMonth = taxMonth;
+    this._taxCode = taxCode;
+    this._earnings = earnings;
+    this._deductions = deductions;
+    this._grossBenefits = grossBenefits;
+  }
+
+  public static async create(file: File): Promise<ADPPayslip> {
+    const buffer = await file.arrayBuffer();
     const pdf = await getDocument(buffer).promise;
 
     let tokens = [];
@@ -33,18 +49,26 @@ export default class ADPPayslip extends Payslip {
 
     tokens = mergeConnectedTokens(tokens);
 
-    this._taxCode = getFirstItemValue(tokens, "TAX CODE");
-    this._period = TAX_PERIODS.get(
-      Number(getFirstItemValue(tokens, "TAX PERIOD"))
-    )!;
+    const taxCode = getFirstItemValue(tokens, "TAX CODE");
+    const taxMonth = taxMonthFromPeriod(
+      Number(getFirstItemValue(tokens, "TAX PERIOD"))!
+    );
 
-    this._earnings = findEarnings(tokens);
-    this._deductions = findDeductions(tokens);
-    this._grossBenefits = findGrossBenefits(tokens);
+    const earnings = findEarnings(tokens);
+    const deductions = findDeductions(tokens);
+    const grossBenefits = findGrossBenefits(tokens);
+
+    return new ADPPayslip(
+      taxMonth,
+      taxCode,
+      earnings,
+      deductions,
+      grossBenefits
+    );
   }
 }
 
-function findEarnings(tokens: Array<PDFToken>): List<PayslipItem> {
+function findEarnings(tokens: Array<PDFToken>): PayslipItemList {
   const top = getFirstToken(tokens, "PAYMENTS").y - CHAR_DELTA;
   const bottom =
     getFirstToken(tokens, "TOTAL PAYMENT").y +
@@ -57,7 +81,7 @@ function findEarnings(tokens: Array<PDFToken>): List<PayslipItem> {
   return extractItems(earnings);
 }
 
-function findDeductions(tokens: Array<PDFToken>): List<PayslipItem> {
+function findDeductions(tokens: Array<PDFToken>): PayslipItemList {
   const top = getFirstToken(tokens, "DEDUCTIONS").y - CHAR_DELTA;
   const bottom =
     getFirstToken(tokens, "TOTAL DEDUCTION").y +
@@ -71,7 +95,7 @@ function findDeductions(tokens: Array<PDFToken>): List<PayslipItem> {
   return extractItems(deductions);
 }
 
-function findGrossBenefits(tokens: Array<PDFToken>): List<PayslipItem> {
+function findGrossBenefits(tokens: Array<PDFToken>): PayslipItemList {
   const top = getFirstToken(tokens, "GROSS BENEFITS").y - CHAR_DELTA;
   const left = getFirstToken(tokens, "GROSS BENEFITS").x - CHAR_DELTA;
 
@@ -195,7 +219,7 @@ function findTokensInBoundary(
   );
 }
 
-function extractItems(tokens: Array<PDFToken>): List<PayslipItem> {
+function extractItems(tokens: Array<PDFToken>): PayslipItemList {
   const uniqueItems = tokens.reduce((acc, curr, idx) => {
     const itemName = curr.cleanStr;
 
@@ -215,7 +239,9 @@ function extractItems(tokens: Array<PDFToken>): List<PayslipItem> {
     }
   }, Map() as Map<string, number>);
 
-  return List(
-    uniqueItems.entrySeq().map(([name, amount]) => ({ name, amount }))
-  );
+  const list = new PayslipItemList();
+  uniqueItems
+    .entrySeq()
+    .forEach(([name, amount]) => list.add({ name, amount }));
+  return list;
 }

@@ -1,17 +1,18 @@
 import Salary from "../../compensation/element/salary";
 import ManualFixedIncome, {
-  FromManualFixedIncome,
+  IManualFixedIncome,
 } from "../../compensation/income/manualFixedIncome";
-import Payslip, { FromPayslip } from "../../compensation/income/payslip";
+import Payslip, { IPayslip } from "../../compensation/income/payslip/payslip";
 
 export default class MetaSalary
   extends Salary
-  implements FromPayslip<number>, FromManualFixedIncome<number>
+  implements IPayslip<number>, IManualFixedIncome<number>
 {
   fromManualFixedIncome(manualFixedIncome: ManualFixedIncome): number {
     throw new Error("Method not implemented.");
   }
+
   fromPayslip(payslip: Payslip): number {
-    throw new Error("Method not implemented.");
+    return payslip.earnings.sum("SALARY", "COMPANY SICKPAY", "PAYABLE SSP");
   }
 }

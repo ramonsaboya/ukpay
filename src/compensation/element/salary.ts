@@ -1,7 +1,10 @@
-import CompensationElementBase, {
+import CompensationElement, {
   CompensationElementType,
-} from "./compensationElementBase";
+} from "./compensationElement";
 
-export default abstract class Salary extends CompensationElementBase<number> {
+export default abstract class Salary extends CompensationElement<number> {
   type = CompensationElementType.SALARY;
+  dependencies = new Set<CompensationElementType>();
+
+  rowLabel = "Salary";
 }

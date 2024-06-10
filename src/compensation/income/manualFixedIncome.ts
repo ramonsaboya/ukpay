@@ -1,7 +1,7 @@
 import { IncomeSourceType } from "./incomeSource";
 import IncomeSourceFixed from "./incomeSourceFixed";
 
-export interface FromManualFixedIncome<T> {
+export interface IManualFixedIncome<T> {
   fromManualFixedIncome(manualFixedIncome: ManualFixedIncome): T;
 }
 

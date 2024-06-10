@@ -1,5 +1,3 @@
-import CompanyMonthlyCompensation from "./company/companyMonthlyCompensation";
-
 export const UKPAY_TABLE_ROWS: ReadonlyArray<UKPayRow<any>> = [
   createNumberRow("Salary", (compensation) => compensation.salary),
   createNumberRow("Bonus", (compensation) => compensation.bonus),
@@ -87,8 +85,8 @@ export const UKPAY_TABLE_ROWS: ReadonlyArray<UKPayRow<any>> = [
   ),
 ];
 
-type ValueFn<T> = (compensation: CompanyMonthlyCompensation) => T;
-type AggregateFn<T> = (compensations: Array<CompanyMonthlyCompensation>) => T;
+type ValueFn<T> = (compensation: any) => T;
+type AggregateFn<T> = (compensations: Array<any>) => T;
 export type UKPayRow<T> = {
   label: string;
   value: ValueFn<T>;
