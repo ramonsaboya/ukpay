@@ -1,4 +1,4 @@
-import TaxMonth from "../../taxMonth";
+import TaxMonth from "src/taxMonth";
 
 export enum IncomeSourceType {
   PAYSLIP,

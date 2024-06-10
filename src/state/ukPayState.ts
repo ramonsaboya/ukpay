@@ -1,10 +1,10 @@
 import { List, Map } from "immutable";
-import IncomeSource from "../compensation/income/incomeSource";
-import TaxMonth from "../taxMonth";
+import MetaSalary from "src/company/meta/metaSalary";
 import CompensationElement, {
   CompensationElementType,
-} from "../compensation/element/compensationElement";
-import MetaSalary from "../company/meta/metaSalary";
+} from "src/compensation/element/compensationElement";
+import IncomeSource from "src/compensation/income/incomeSource";
+import TaxMonth from "src/taxMonth";
 
 export type IncomeSourcesByMonth = Map<TaxMonth, List<IncomeSource>>;
 export type CompensationElements = List<CompensationElement<any>>;

@@ -1,5 +1,5 @@
-import { IncomeSourceType } from "./incomeSource";
-import IncomeSourceFixed from "./incomeSourceFixed";
+import { IncomeSourceType } from "src/compensation/income/incomeSource";
+import IncomeSourceFixed from "src/compensation/income/incomeSourceFixed";
 
 export interface IManualFixedIncome<T> {
   fromManualFixedIncome(manualFixedIncome: ManualFixedIncome): T;

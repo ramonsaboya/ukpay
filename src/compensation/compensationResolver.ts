@@ -1,13 +1,13 @@
 import { List, Map as ImmutableMap } from "immutable";
-import { TAX_MONTHS } from "../taxMonth";
-import { CompensationElementType } from "./element/compensationElement";
-import IncomeSource from "./income/incomeSource";
+import { CompensationElementType } from "src/compensation/element/compensationElement";
+import IncomeSource from "src/compensation/income/incomeSource";
 import {
+  IncomeSourcesByMonth,
+  CompensationElements,
   CalculatedCompensationValuesByMonth,
   CalculatedMonthCompensationValuesByElementType,
-  CompensationElements,
-  IncomeSourcesByMonth,
-} from "../state/ukPayState";
+} from "src/state/ukPayState";
+import { TAX_MONTHS } from "src/taxMonth";
 
 export default function resolveCompensation(
   incomeSources: IncomeSourcesByMonth,

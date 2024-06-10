@@ -1,11 +1,11 @@
 import { List } from "immutable";
-import { UKPayAction } from "./ukPayAction";
-import { UKPayState } from "./ukPayState";
+import resolveCompensation from "src/compensation/compensationResolver";
 import IncomeSource, {
   IncomeSourceType,
-} from "../compensation/income/incomeSource";
-import resolveCompensation from "../compensation/compensationResolver";
-import Payslip from "../compensation/income/payslip/payslip";
+} from "src/compensation/income/incomeSource";
+import Payslip from "src/compensation/income/payslip/payslip";
+import { UKPayAction } from "src/state/ukPayAction";
+import { UKPayState } from "src/state/ukPayState";
 
 export function ukPayReducer(
   state: UKPayState,
@@ -19,6 +19,7 @@ export function ukPayReducer(
       const currentMonthIncomeSources =
         state.incomeSources.get(taxMonth) ?? List();
 
+      // TODO maybe should replace instead of blocking
       if (
         !allowNewIncomeSource(currentMonthIncomeSources.toArray(), incomeSource)
       ) {

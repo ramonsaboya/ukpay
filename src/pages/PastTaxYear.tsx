@@ -1,14 +1,14 @@
 import React, { useReducer } from "react";
 import { Box } from "@mui/material";
+import ADPPayslip from "src/compensation/income/payslip/adpPayslip";
+import Payslip from "src/compensation/income/payslip/payslip";
 import {
   UKPayDispatchContext,
   useUKPayDispatch,
-} from "../state/UKPayDispatchContext";
-import { ukPayReducer } from "../state/ukPayReducer";
-import { defaultUKPayState } from "../state/ukPayState";
-import UKPayTable from "../UKPayTable";
-import Payslip from "../compensation/income/payslip/payslip";
-import ADPPayslip from "../compensation/income/payslip/adpPayslip";
+} from "src/state/UKPayDispatchContext";
+import { ukPayReducer } from "src/state/ukPayReducer";
+import { defaultUKPayState } from "src/state/ukPayState";
+import UKPayTable from "src/UKPayTable";
 
 const PAYSLIP_PROVIDER_CLASS: { create(file: File): Promise<Payslip> } =
   ADPPayslip;

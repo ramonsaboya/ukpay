@@ -1,13 +1,15 @@
-import {
-  CalculatedCompensationValuesByMonth,
-  CalculatedMonthCompensationValuesByElementType,
-} from "../../state/ukPayState";
-import TaxMonth from "../../taxMonth";
-import IncomeSource, { IncomeSourceType } from "../income/incomeSource";
+import IncomeSource, {
+  IncomeSourceType,
+} from "src/compensation/income/incomeSource";
 import ManualFixedIncome, {
   IManualFixedIncome,
-} from "../income/manualFixedIncome";
-import Payslip, { IPayslip } from "../income/payslip/payslip";
+} from "src/compensation/income/manualFixedIncome";
+import Payslip, { IPayslip } from "src/compensation/income/payslip/payslip";
+import {
+  CalculatedMonthCompensationValuesByElementType,
+  CalculatedCompensationValuesByMonth,
+} from "src/state/ukPayState";
+import TaxMonth from "src/taxMonth";
 
 export enum CompensationElementType {
   SALARY,

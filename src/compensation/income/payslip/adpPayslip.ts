@@ -1,9 +1,8 @@
 import { getDocument } from "pdfjs-dist";
-import { Map } from "immutable";
 import { TextItem, TextMarkedContent } from "pdfjs-dist/types/src/display/api";
-import Payslip from "./payslip";
-import PayslipItemList from "./paylistItemList";
-import TaxMonth, { taxMonthFromPeriod } from "../../../taxMonth";
+import PayslipItemList from "src/compensation/income/payslip/paylistItemList";
+import Payslip from "src/compensation/income/payslip/payslip";
+import TaxMonth, { taxMonthFromPeriod } from "src/taxMonth";
 
 type PDFToken = {
   originalStr_DO_NOT_USE: string;
@@ -230,18 +229,15 @@ function extractItems(tokens: Array<PDFToken>): PayslipItemList {
     if (curr.numericForm != null) {
       const prev = tokens[idx - 1];
 
-      return acc.update(
-        prev.cleanStr,
-        (prevValue) => prevValue! + curr.numericForm!
-      );
+      return acc.set(prev.cleanStr, acc.get(prev.cleanStr)! + curr.numericForm);
     } else {
-      return acc.set(itemName, acc.get(itemName, 0));
+      return acc.set(itemName, acc.get(itemName) ?? 0);
     }
-  }, Map() as Map<string, number>);
+  }, new Map() as Map<string, number>);
 
   const list = new PayslipItemList();
-  uniqueItems
-    .entrySeq()
-    .forEach(([name, amount]) => list.add({ name, amount }));
+  Array.from(uniqueItems.entries()).forEach(([name, amount]) =>
+    list.add({ name, amount })
+  );
   return list;
 }

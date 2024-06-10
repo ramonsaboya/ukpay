@@ -1,5 +1,3 @@
-import { Map } from "immutable";
-
 export type PayslipItem = {
   name: string;
   amount: number;
@@ -9,30 +7,31 @@ export default class PayslipItemList {
   private _items: Map<string, PayslipItem>;
 
   constructor() {
-    this._items = Map();
+    this._items = new Map();
   }
 
   get items() {
-    return this._items.valueSeq().toArray();
+    return Object.values(this._items);
   }
 
-  add(item: PayslipItem) {
-    if (!this._items.has(item.name)) {
-      this._items = this._items.set(item.name, item);
+  add({ name, amount }: PayslipItem) {
+    if (!this._items.has(name)) {
+      this._items.set(name, { name, amount });
     } else {
-      this._items = this._items.update(item.name, (prev) => ({
-        name: item.name,
-        amount: prev!.amount + item.amount,
-      }));
+      this._items.set(name, {
+        name,
+        amount: this._items.get(name)!.amount + amount,
+      });
     }
   }
 
   get(name: string, defaultValue?: PayslipItem) {
-    return this._items.get(name, defaultValue);
+    return this._items.get(name) ?? defaultValue;
   }
 
   sum(...names: string[]) {
-    return this._items.reduce((acc, { name, amount }) => {
+    const values = Array.from(this._items.values());
+    return values.reduce((acc, { name, amount }) => {
       if (names.includes(name)) {
         return acc + amount;
       }

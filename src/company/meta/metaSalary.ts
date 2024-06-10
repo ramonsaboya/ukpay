@@ -1,8 +1,8 @@
-import Salary from "../../compensation/element/salary";
+import Salary from "src/compensation/element/salary";
 import ManualFixedIncome, {
   IManualFixedIncome,
-} from "../../compensation/income/manualFixedIncome";
-import Payslip, { IPayslip } from "../../compensation/income/payslip/payslip";
+} from "src/compensation/income/manualFixedIncome";
+import Payslip, { IPayslip } from "src/compensation/income/payslip/payslip";
 
 export default class MetaSalary
   extends Salary

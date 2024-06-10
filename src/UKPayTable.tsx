@@ -8,8 +8,8 @@ import {
   TableCell,
   TableBody,
 } from "@mui/material";
-import { TAX_MONTHS, taxMonthLabel } from "./taxMonth";
-import { useUKPayState } from "./state/UKPayDispatchContext";
+import { useUKPayState } from "src/state/UKPayDispatchContext";
+import { TAX_MONTHS, taxMonthLabel } from "src/taxMonth";
 
 export default function UKPayTable() {
   return (

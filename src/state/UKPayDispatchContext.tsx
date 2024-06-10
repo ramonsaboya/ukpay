@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
-import { UKPayAction } from "./ukPayAction";
-import { UKPayState, defaultUKPayState } from "./ukPayState";
+import { UKPayAction } from "src/state/ukPayAction";
+import { UKPayState, defaultUKPayState } from "src/state/ukPayState";
 
 type DispatchContextType = (action: UKPayAction) => void;
 

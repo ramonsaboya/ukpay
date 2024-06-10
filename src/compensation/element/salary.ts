@@ -1,6 +1,6 @@
 import CompensationElement, {
   CompensationElementType,
-} from "./compensationElement";
+} from "src/compensation/element/compensationElement";
 
 export default abstract class Salary extends CompensationElement<number> {
   type = CompensationElementType.SALARY;
