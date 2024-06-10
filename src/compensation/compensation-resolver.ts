@@ -13,6 +13,7 @@ export default function resolveCompensation(
   incomeSources: IncomeSourcesByMonth,
   compensationElements: CompensationElements
 ): CalculatedCompensationValuesByMonth {
+  // TODO this can probably be done only once after all compensation elements are registered
   const resolveOrder = toposort(compensationElements);
   const sortedCompensationElements = resolveOrder.map(
     (elementType) =>

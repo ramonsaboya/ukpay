@@ -1,12 +1,18 @@
 import { List, Map } from "immutable";
+import MetaAdjustedIncome from "src/company/meta/meta-adjusted-income";
+import MetaAverageNetIncome from "src/company/meta/meta-average-net-income";
 import MetaBenefitsInKind from "src/company/meta/meta-benefits-in-kind";
 import MetaBonus from "src/company/meta/meta-bonus";
 import MetaIncomeTax from "src/company/meta/meta-income-tax";
 import MetaNationalInsurance from "src/company/meta/meta-national-insurance";
+import MetaNetPay from "src/company/meta/meta-net-pay";
+import MetaNetPayWithRSU from "src/company/meta/meta-net-pay-with-rsu";
 import MetaPensionEmployeeAmount from "src/company/meta/meta-pension-employee-amount";
 import MetaPensionEmployeePercentage from "src/company/meta/meta-pension-employee-percentage";
 import MetaPensionEmployerAmount from "src/company/meta/meta-pension-employer-amount";
 import MetaPensionEmployerPercentage from "src/company/meta/meta-pension-employer-percentage";
+import MetaPensionTotalAmount from "src/company/meta/meta-pension-total-amount";
+import MetaPensionTotalPercentage from "src/company/meta/meta-pension-total-percentage";
 import MetaRSUOverwithheldRefund from "src/company/meta/meta-rsu-overwithheld-refund";
 import MetaRSUTaxOffset from "src/company/meta/meta-rsu-tax-offset";
 import MetaRSUVest from "src/company/meta/meta-rsu-vest";
@@ -50,12 +56,17 @@ export function defaultUKPayState(
       new MetaPensionEmployeePercentage(),
       new MetaPensionEmployerAmount(),
       new MetaPensionEmployerPercentage(),
+      new MetaPensionTotalAmount(),
+      new MetaPensionTotalPercentage(),
       new MetaRSUVest(),
       new MetaRSUTaxOffset(),
       new MetaRSUOverwithheldRefund(),
       new MetaIncomeTax(),
       new MetaNationalInsurance(),
       new MetaTaxablePay(),
+      new MetaAdjustedIncome(),
+      new MetaNetPay(),
+      new MetaNetPayWithRSU(),
     ]),
     calculatedCompensationValues: Map(),
   };
