@@ -22,6 +22,7 @@ export default function UKPayTable() {
               <TableCell key={taxMonth}>{taxMonthLabel(taxMonth)}</TableCell>
             ))}
             <TableCell>Total</TableCell>
+            <TableCell>Average</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -65,6 +66,11 @@ function CompensationSummaryRows() {
 
             <TableCell align="right">
               {aggregate != null ? formatter(aggregate(monthlyValues)) : ""}
+            </TableCell>
+            <TableCell align="right">
+              {aggregate != null
+                ? formatter(aggregate(monthlyValues) / 12)
+                : ""}
             </TableCell>
           </TableRow>
         );

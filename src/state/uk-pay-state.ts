@@ -1,6 +1,6 @@
 import { List, Map } from "immutable";
 import MetaAdjustedIncome from "src/company/meta/meta-adjusted-income";
-import MetaAverageNetIncome from "src/company/meta/meta-average-net-income";
+import MetaNetIncome from "src/company/meta/meta-net-income";
 import MetaBenefitsInKind from "src/company/meta/meta-benefits-in-kind";
 import MetaBonus from "src/company/meta/meta-bonus";
 import MetaIncomeTax from "src/company/meta/meta-income-tax";
@@ -67,6 +67,7 @@ export function defaultUKPayState(
       new MetaAdjustedIncome(),
       new MetaNetPay(),
       new MetaNetPayWithRSU(),
+      new MetaNetIncome(),
     ]),
     calculatedCompensationValues: Map(),
   };

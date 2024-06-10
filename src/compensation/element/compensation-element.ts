@@ -31,7 +31,7 @@ export enum CompensationElementType {
   ADJUSTED_INCOME,
   NET_PAY,
   NET_PAY_WITH_RSU,
-  AVERAGE_NET_INCOME,
+  NET_INCOME,
 }
 
 export interface IVirtualElement<T> {
