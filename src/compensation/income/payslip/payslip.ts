@@ -1,10 +1,10 @@
-import { IncomeSourceType } from "src/compensation/income/incomeSource";
-import IncomeSourceFixed from "src/compensation/income/incomeSourceFixed";
-import PayslipItemList from "src/compensation/income/payslip/paylistItemList";
+import { IncomeSourceType } from "src/compensation/income/income-source";
+import IncomeSourceFixed from "src/compensation/income/income-source-fixed";
+import PayslipItemList from "src/compensation/income/payslip/paylist-item-list";
 import {
   CalculatedMonthCompensationValuesByElementType,
   CalculatedCompensationValuesByMonth,
-} from "src/state/ukPayState";
+} from "src/state/uk-pay-state";
 import TaxMonth from "src/taxMonth";
 
 export interface IPayslip<T> {
