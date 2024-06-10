@@ -23,6 +23,8 @@ export enum CompensationElementType {
   RSU_VEST,
   RSU_TAX_OFFSET,
   RSU_OVERWITHHELD_REFUND,
+  INCOME_TAX,
+  NATIONAL_INSURANCE,
 }
 
 export default abstract class CompensationElement<T> {

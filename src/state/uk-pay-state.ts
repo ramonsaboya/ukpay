@@ -1,6 +1,8 @@
 import { List, Map } from "immutable";
 import MetaBenefitsInKind from "src/company/meta/meta-benefits-in-kind";
 import MetaBonus from "src/company/meta/meta-bonus";
+import MetaIncomeTax from "src/company/meta/meta-income-tax";
+import MetaNationalInsurance from "src/company/meta/meta-national-insurance";
 import MetaPensionEmployeeAmount from "src/company/meta/meta-pension-employee-amount";
 import MetaPensionEmployeePercentage from "src/company/meta/meta-pension-employee-percentage";
 import MetaPensionEmployerAmount from "src/company/meta/meta-pension-employer-amount";
@@ -50,6 +52,8 @@ export function defaultUKPayState(
       new MetaRSUVest(),
       new MetaRSUTaxOffset(),
       new MetaRSUOverwithheldRefund(),
+      new MetaIncomeTax(),
+      new MetaNationalInsurance(),
     ]),
     calculatedCompensationValues: Map(),
   };
