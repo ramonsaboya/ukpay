@@ -1,12 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
 
 import { pdfjs } from "react-pdf";
 import workerContent from "./pdf.worker.min.json";
-import PastTaxYear from "./pages/PastTaxYear";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "./pages/Home";
+
+import "./index.css";
+import Home from "src/pages/Home";
+import PastTaxYear from "src/pages/PastTaxYear";
 
 let workerBlob = new Blob([workerContent], { type: "text/javascript" });
 let workerBlobURL = URL.createObjectURL(workerBlob);

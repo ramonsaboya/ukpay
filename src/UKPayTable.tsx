@@ -8,9 +8,8 @@ import {
   TableCell,
   TableBody,
 } from "@mui/material";
-import { useUKPayState } from "./state/UKPayDispatchContext";
-import { TAX_PERIODS } from "./taxPeriod";
-import { UKPAY_TABLE_ROWS } from "./ukPayRows";
+import { useUKPayState } from "src/state/UKPayDispatchContext";
+import { TAX_MONTHS, taxMonthLabel } from "src/taxMonth";
 
 export default function UKPayTable() {
   return (
@@ -19,10 +18,11 @@ export default function UKPayTable() {
         <TableHead>
           <TableRow>
             <TableCell></TableCell>
-            {TAX_PERIODS.valueSeq().map(({ month }) => (
-              <TableCell key={month}>{month}</TableCell>
+            {TAX_MONTHS.map((taxMonth) => (
+              <TableCell key={taxMonth}>{taxMonthLabel(taxMonth)}</TableCell>
             ))}
             <TableCell>Total</TableCell>
+            <TableCell>Average</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -34,36 +34,47 @@ export default function UKPayTable() {
 }
 
 function CompensationSummaryRows() {
-  const { companyCompensation } = useUKPayState();
+  const { compensationElements, calculatedCompensationValues } =
+    useUKPayState();
 
   return (
     <>
-      {UKPAY_TABLE_ROWS.map(({ label, value, formatter, aggregate }) => (
-        <TableRow key={label}>
-          <TableCell>{label}</TableCell>
+      {compensationElements.map(({ rowLabel, type, formatter, aggregate }) => {
+        const monthlyValues = calculatedCompensationValues
+          .map((monthValues) => monthValues.get(type))
+          .valueSeq()
+          .toArray();
 
-          {TAX_PERIODS.valueSeq().map(({ id: taxPeriodId, month }) => {
-            const compensation = companyCompensation.get(taxPeriodId);
-            const reactKey = `${label}-${month}`;
+        return (
+          <TableRow key={rowLabel}>
+            <TableCell>{rowLabel}</TableCell>
 
-            if (compensation == null) {
-              return <TableCell key={reactKey}>{formatter(0)}</TableCell>;
-            }
+            {TAX_MONTHS.map((taxMonth) => {
+              const compensation = calculatedCompensationValues.get(taxMonth);
+              const reactKey = `${rowLabel}-${taxMonthLabel(taxMonth)}`;
 
-            return (
-              <TableCell key={reactKey} align="right">
-                {formatter(value(compensation))}
-              </TableCell>
-            );
-          })}
+              if (compensation == null) {
+                return <TableCell key={reactKey}>{formatter(0)}</TableCell>;
+              }
 
-          <TableCell align="right">
-            {aggregate != null
-              ? formatter(aggregate(companyCompensation.valueSeq().toArray()))
-              : ""}
-          </TableCell>
-        </TableRow>
-      ))}
+              return (
+                <TableCell key={reactKey} align="right">
+                  {formatter(compensation.get(type))}
+                </TableCell>
+              );
+            })}
+
+            <TableCell align="right">
+              {aggregate != null ? formatter(aggregate(monthlyValues)) : ""}
+            </TableCell>
+            <TableCell align="right">
+              {aggregate != null
+                ? formatter(aggregate(monthlyValues) / 12)
+                : ""}
+            </TableCell>
+          </TableRow>
+        );
+      })}
     </>
   );
 }

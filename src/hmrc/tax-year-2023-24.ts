@@ -1,4 +1,4 @@
-import taxYearBuilder from "./taxYearBuilder";
+import taxYearBuilder from "src/hmrc/tax-year-builder";
 
 const TAX_RATES = [
   {
