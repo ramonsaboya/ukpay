@@ -21,7 +21,7 @@ export default function Home() {
       }}
     >
       <Card sx={{ maxWidth: 345 }}>
-        <CardActionArea component={Link} to={"/past-tax-year"}>
+        <CardActionArea component={Link} to={"/ukpay/past-tax-year"}>
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
               Past tax year

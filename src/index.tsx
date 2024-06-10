@@ -16,11 +16,11 @@ pdfjs.GlobalWorkerOptions.workerSrc = workerBlobURL;
 
 const router = createBrowserRouter([
   {
-    path: "/ukpay",
+    path: "/ukpay/",
     element: <Home />,
   },
   {
-    path: "/past-tax-year",
+    path: "/ukpay/past-tax-year",
     element: <PastTaxYear />,
   },
 ]);
