@@ -25,6 +25,15 @@ export enum CompensationElementType {
   RSU_OVERWITHHELD_REFUND,
   INCOME_TAX,
   NATIONAL_INSURANCE,
+  TAXABLE_PAY,
+}
+
+export interface IVirtualElement<T> {
+  fromState(
+    currentMonthValues: CalculatedMonthCompensationValuesByElementType,
+    taxMonth: TaxMonth,
+    previousMonthsValues: CalculatedCompensationValuesByMonth
+  ): T;
 }
 
 export default abstract class CompensationElement<T> {
@@ -41,6 +50,10 @@ export default abstract class CompensationElement<T> {
     currentMonthValues: CalculatedMonthCompensationValuesByElementType,
     previousMonthsValues: CalculatedCompensationValuesByMonth
   ): T {
+    if (this.isVirtualElement()) {
+      return this.fromState(currentMonthValues, taxMonth, previousMonthsValues);
+    }
+
     for (const incomeSource of incomeSources) {
       if (this.isPayslip(incomeSource)) {
         return this.fromPayslip(
@@ -71,5 +84,9 @@ export default abstract class CompensationElement<T> {
       incomeSource.type === IncomeSourceType.MANUAL_FIXED &&
       "fromManualFixedIncome" in this
     );
+  }
+
+  private isVirtualElement(): this is IVirtualElement<T> {
+    return "fromState" in this;
   }
 }

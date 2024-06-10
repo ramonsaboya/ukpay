@@ -12,6 +12,7 @@ import MetaRSUTaxOffset from "src/company/meta/meta-rsu-tax-offset";
 import MetaRSUVest from "src/company/meta/meta-rsu-vest";
 import MetaSalary from "src/company/meta/meta-salary";
 import MetaTaxableBenefits from "src/company/meta/meta-taxable-benefits";
+import MetaTaxablePay from "src/company/meta/meta-taxable-pay";
 import CompensationElement, {
   CompensationElementType,
 } from "src/compensation/element/compensation-element";
@@ -54,6 +55,7 @@ export function defaultUKPayState(
       new MetaRSUOverwithheldRefund(),
       new MetaIncomeTax(),
       new MetaNationalInsurance(),
+      new MetaTaxablePay(),
     ]),
     calculatedCompensationValues: Map(),
   };
