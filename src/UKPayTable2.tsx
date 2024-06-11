@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   TableContainer,
   Paper,
@@ -15,13 +15,9 @@ import {
   useUKPayState,
 } from "src/state/UKPayDispatchContext";
 import { TAX_MONTHS, taxMonthLabel } from "src/taxMonth";
-import CompensationElement, {
-  CompensationElementType,
-} from "src/compensation/element/compensation-element";
+import { CompensationElementType } from "src/compensation/element/compensation-element";
 import { Map as ImmutableMap } from "immutable";
 import MetaManualFixedIncome from "src/compensation/income/meta-manual-fixed-income";
-import IncomeSource from "src/compensation/income/income-source";
-import { IManualFixedIncome } from "src/compensation/income/manual-fixed-income";
 
 export default function UKPayTable2() {
   const { editingMonth } = useUKPayState();
@@ -92,16 +88,6 @@ export default function UKPayTable2() {
   );
 }
 
-const MANUAL_ELEMENTS = [
-  CompensationElementType.SALARY,
-  CompensationElementType.BONUS,
-  CompensationElementType.PENSION_EMPLOYEE_PERCENTAGE,
-  CompensationElementType.PENSION_EMPLOYER_PERCENTAGE,
-  CompensationElementType.RSU_VEST,
-  CompensationElementType.RSU_TAX_OFFSET,
-  CompensationElementType.RSU_OVERWITHHELD_REFUND,
-];
-
 function CompensationSummaryRows({
   editingMonthValues,
   setEditingMonthValue,
@@ -117,10 +103,10 @@ function CompensationSummaryRows({
 
   return (
     <>
-      {compensationElements.map((element) => {
+      {compensationElements.valueSeq().map((element) => {
         const { rowLabel, type, formatter, aggregate } = element;
         const monthlyValues = calculatedCompensationValues
-          .map((monthValues) => monthValues.get(type))
+          .map((monthValues) => monthValues.get(type)!)
           .valueSeq()
           .toArray();
 
@@ -154,7 +140,7 @@ function CompensationSummaryRows({
 
               return (
                 <TableCell key={reactKey} align="right">
-                  {formatter(compensation.get(type))}
+                  {formatter(compensation.get(type)!)}
                 </TableCell>
               );
             })}
