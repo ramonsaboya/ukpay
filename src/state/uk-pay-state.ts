@@ -1,4 +1,4 @@
-import { List, Map } from "immutable";
+import { Map as ImmutableMap } from "immutable";
 import MetaAdjustedIncome from "src/company/meta/meta-adjusted-income";
 import MetaNetIncome from "src/company/meta/meta-net-income";
 import MetaBenefitsInKind from "src/company/meta/meta-benefits-in-kind";
@@ -25,29 +25,33 @@ import CompensationElement, {
 import IncomeSource from "src/compensation/income/income-source";
 import TaxMonth from "src/taxMonth";
 
-export type IncomeSourcesByMonth = Map<TaxMonth, List<IncomeSource>>;
-export type CompensationElements = List<CompensationElement>;
-export type CalculatedMonthCompensationValuesByElementType = Map<
+export type IncomeSourceByMonth = ImmutableMap<TaxMonth, IncomeSource>;
+export type CompensationElementByType = ImmutableMap<
   CompensationElementType,
-  any
+  CompensationElement
 >;
-export type CalculatedCompensationValuesByMonth = Map<
+export type CalculatedMonthCompensationValuesByElementType = ImmutableMap<
+  CompensationElementType,
+  number
+>;
+export type CalculatedCompensationValuesByMonth = ImmutableMap<
   TaxMonth,
   CalculatedMonthCompensationValuesByElementType
 >;
 export type UKPayState = {
-  incomeSources: IncomeSourcesByMonth;
-  compensationElements: CompensationElements;
+  incomeSources: IncomeSourceByMonth;
+  compensationElements: CompensationElementByType;
+  compensationElementsTopologicalOrder: ReadonlyArray<CompensationElementType>;
   calculatedCompensationValues: CalculatedCompensationValuesByMonth;
+  editingMonth: TaxMonth | null;
 };
 
 type UKPayStateInitializerArgs = {};
 export function defaultUKPayState(
   _args: UKPayStateInitializerArgs
 ): UKPayState {
-  return {
-    incomeSources: Map(),
-    compensationElements: List([
+  const compensationElements = ImmutableMap(
+    [
       new MetaSalary(),
       new MetaBonus(),
       new MetaTaxableBenefits(),
@@ -68,7 +72,64 @@ export function defaultUKPayState(
       new MetaNetPay(),
       new MetaNetPayWithRSU(),
       new MetaNetIncome(),
-    ]),
-    calculatedCompensationValues: Map(),
+    ].map((element) => [element.type, element])
+  );
+
+  return {
+    incomeSources: ImmutableMap(),
+    compensationElements,
+    compensationElementsTopologicalOrder: toposort(compensationElements),
+    calculatedCompensationValues: ImmutableMap(),
+    editingMonth: null,
   };
+}
+
+function toposort(
+  compensationElements: CompensationElementByType
+): Array<CompensationElementType> {
+  const graph = new Map<
+    CompensationElementType,
+    Set<CompensationElementType>
+  >();
+  const indegree = new Map<CompensationElementType, number>();
+
+  compensationElements.valueSeq().forEach((element) => {
+    if (!graph.has(element.type)) {
+      graph.set(element.type, new Set());
+    }
+    element.dependencies.forEach((dependency) => {
+      if (!graph.has(dependency)) {
+        graph.set(dependency, new Set());
+      }
+      graph.get(dependency)!.add(element.type);
+    });
+    indegree.set(element.type, element.dependencies.size);
+  });
+
+  const topoorder = [];
+
+  const stack: CompensationElementType[] = [];
+  graph.forEach((_, elementType) => {
+    if (indegree.get(elementType) === 0) {
+      stack.push(elementType);
+    }
+  });
+
+  while (stack.length > 0) {
+    const element = stack.pop()!;
+    topoorder.push(element);
+
+    graph.get(element)!.forEach((dependency) => {
+      indegree.set(dependency, indegree.get(dependency)! - 1);
+      if (indegree.get(dependency) === 0) {
+        stack.push(dependency);
+      }
+    });
+  }
+
+  if (Array.from(indegree.values()).some((val) => val > 0)) {
+    throw new Error("Circular dependency in compensation elements");
+  }
+
+  return topoorder;
 }

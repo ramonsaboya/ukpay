@@ -52,7 +52,7 @@ export default abstract class CompensationElement {
 
   public calculate(
     taxMonth: TaxMonth,
-    incomeSources: Array<IncomeSource>,
+    incomeSource: IncomeSource,
     currentMonthValues: CalculatedMonthCompensationValuesByElementType,
     previousMonthsValues: CalculatedCompensationValuesByMonth
   ): number {
@@ -60,21 +60,25 @@ export default abstract class CompensationElement {
       return this.fromState(currentMonthValues, taxMonth, previousMonthsValues);
     }
 
-    for (const incomeSource of incomeSources) {
-      if (this.isPayslip(incomeSource)) {
-        return this.fromPayslip(
-          incomeSource as Payslip,
-          currentMonthValues,
-          taxMonth,
-          previousMonthsValues
-        );
-      }
-      if (this.isManualFixedIncome(incomeSource)) {
-        return this.fromManualFixedIncome(incomeSource as ManualFixedIncome);
-      }
+    if (this.isPayslip(incomeSource)) {
+      return this.fromPayslip(
+        incomeSource as Payslip,
+        currentMonthValues,
+        taxMonth,
+        previousMonthsValues
+      );
     }
 
-    throw new Error("Not implemented");
+    if (this.isManualFixedIncome(incomeSource)) {
+      return this.fromManualFixedIncome(
+        incomeSource as ManualFixedIncome,
+        currentMonthValues,
+        taxMonth,
+        previousMonthsValues
+      );
+    }
+
+    return 0;
   }
 
   private isPayslip(incomeSource: IncomeSource): this is IPayslip {
@@ -83,11 +87,12 @@ export default abstract class CompensationElement {
     );
   }
 
-  private isManualFixedIncome(
-    incomeSource: IncomeSource
+  public isManualFixedIncome(
+    incomeSource?: IncomeSource
   ): this is IManualFixedIncome {
     return (
-      incomeSource.type === IncomeSourceType.MANUAL_FIXED &&
+      (incomeSource === undefined ||
+        incomeSource.type === IncomeSourceType.MANUAL_FIXED) &&
       "fromManualFixedIncome" in this
     );
   }

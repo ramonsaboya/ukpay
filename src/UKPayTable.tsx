@@ -41,7 +41,7 @@ function CompensationSummaryRows() {
     <>
       {compensationElements.map(({ rowLabel, type, formatter, aggregate }) => {
         const monthlyValues = calculatedCompensationValues
-          .map((monthValues) => monthValues.get(type))
+          .map((monthValues) => monthValues.get(type)!)
           .valueSeq()
           .toArray();
 
@@ -59,7 +59,7 @@ function CompensationSummaryRows() {
 
               return (
                 <TableCell key={reactKey} align="right">
-                  {formatter(compensation.get(type))}
+                  {formatter(compensation.get(type)!)}
                 </TableCell>
               );
             })}
