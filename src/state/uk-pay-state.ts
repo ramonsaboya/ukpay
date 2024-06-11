@@ -47,12 +47,13 @@ export type UKPayState = {
   calculatedCompensationValues: CalculatedCompensationValuesByMonth;
   editingMonth: TaxMonth | null;
   taxYear: TaxYear;
+  allowEditing: boolean;
 };
 
-type UKPayStateInitializerArgs = {};
-export function defaultUKPayState(
-  _args: UKPayStateInitializerArgs
-): UKPayState {
+type UKPayStateInitializerArgs = {
+  allowEditing: boolean;
+};
+export function defaultUKPayState(args: UKPayStateInitializerArgs): UKPayState {
   const compensationElements = ImmutableMap(
     [
       new MetaSalary(),
@@ -85,6 +86,7 @@ export function defaultUKPayState(
     calculatedCompensationValues: ImmutableMap(),
     editingMonth: null,
     taxYear: taxYear2023_24,
+    allowEditing: args.allowEditing,
   };
 }
 
