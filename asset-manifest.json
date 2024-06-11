@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/ukpay/static/css/main.4b797785.css",
-    "main.js": "/ukpay/static/js/main.a6312f33.js",
+    "main.js": "/ukpay/static/js/main.28f9a36a.js",
     "index.html": "/ukpay/index.html",
     "main.4b797785.css.map": "/ukpay/static/css/main.4b797785.css.map",
-    "main.a6312f33.js.map": "/ukpay/static/js/main.a6312f33.js.map"
+    "main.28f9a36a.js.map": "/ukpay/static/js/main.28f9a36a.js.map"
   },
   "entrypoints": [
     "static/css/main.4b797785.css",
-    "static/js/main.a6312f33.js"
+    "static/js/main.28f9a36a.js"
   ]
 }
