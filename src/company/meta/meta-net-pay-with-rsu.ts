@@ -7,7 +7,7 @@ import { CalculatedMonthCompensationValuesByElementType } from "src/state/uk-pay
 
 export default class MetaNetPayWithRSU
   extends NetPayWithRSU
-  implements IVirtualElement<number>
+  implements IVirtualElement
 {
   dependencies = new Set([
     CompensationElementType.NET_PAY,

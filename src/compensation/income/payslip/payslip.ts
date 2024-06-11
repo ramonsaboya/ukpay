@@ -7,13 +7,13 @@ import {
 } from "src/state/uk-pay-state";
 import TaxMonth from "src/taxMonth";
 
-export interface IPayslip<T> {
+export interface IPayslip {
   fromPayslip(
     payslip: Payslip,
     currentMonthValues: CalculatedMonthCompensationValuesByElementType,
     taxMonth: TaxMonth,
     previousMonthsValues: CalculatedCompensationValuesByMonth
-  ): T;
+  ): number;
 }
 
 export default abstract class Payslip extends IncomeSourceFixed {

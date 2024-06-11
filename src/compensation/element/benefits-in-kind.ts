@@ -4,7 +4,7 @@ import CompensationElement, {
 } from "src/compensation/element/compensation-element";
 import { formatCurrency } from "src/compensation/formatters";
 
-export default abstract class BenefitsInKind extends CompensationElement<number> {
+export default abstract class BenefitsInKind extends CompensationElement {
   type = CompensationElementType.BENEFITS_IN_KIND;
 
   rowLabel = "Benefits in kind";

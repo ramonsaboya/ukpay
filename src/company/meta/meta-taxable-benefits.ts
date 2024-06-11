@@ -7,7 +7,7 @@ import Payslip, { IPayslip } from "src/compensation/income/payslip/payslip";
 
 export default class MetaTaxableBenefits
   extends TaxableBenefits
-  implements IPayslip<number>, IManualFixedIncome<number>
+  implements IPayslip, IManualFixedIncome
 {
   dependencies = new Set<CompensationElementType>();
 

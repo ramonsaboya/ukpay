@@ -4,7 +4,7 @@ import CompensationElement, {
 } from "src/compensation/element/compensation-element";
 import { formatCurrency } from "src/compensation/formatters";
 
-export default abstract class RSUVest extends CompensationElement<number> {
+export default abstract class RSUVest extends CompensationElement {
   type = CompensationElementType.RSU_VEST;
 
   rowLabel = "RSU vest value";

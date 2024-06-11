@@ -7,7 +7,7 @@ import Payslip, { IPayslip } from "src/compensation/income/payslip/payslip";
 
 export default class MetaBonus
   extends Bonus
-  implements IPayslip<number>, IManualFixedIncome<number>
+  implements IPayslip, IManualFixedIncome
 {
   dependencies = new Set<CompensationElementType>();
 

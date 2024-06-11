@@ -4,7 +4,7 @@ import Payslip, { IPayslip } from "src/compensation/income/payslip/payslip";
 
 export default class MetaPensionEmployeeAmount
   extends PensionEmployeeAmount
-  implements IPayslip<number>
+  implements IPayslip
 {
   dependencies = new Set<CompensationElementType>();
 
