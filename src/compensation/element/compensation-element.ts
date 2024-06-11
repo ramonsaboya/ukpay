@@ -34,28 +34,28 @@ export enum CompensationElementType {
   NET_INCOME,
 }
 
-export interface IVirtualElement<T> {
+export interface IVirtualElement {
   fromState(
     currentMonthValues: CalculatedMonthCompensationValuesByElementType,
     taxMonth: TaxMonth,
     previousMonthsValues: CalculatedCompensationValuesByMonth
-  ): T;
+  ): number;
 }
 
-export default abstract class CompensationElement<T> {
+export default abstract class CompensationElement {
   public abstract readonly type: CompensationElementType;
   public abstract readonly dependencies: Set<CompensationElementType>;
 
   public abstract readonly rowLabel: string;
-  public abstract readonly formatter: (value: T) => string;
-  public abstract readonly aggregate: ((values: T[]) => T) | null;
+  public abstract readonly formatter: (value: number) => string;
+  public abstract readonly aggregate: ((values: number[]) => number) | null;
 
   public calculate(
     taxMonth: TaxMonth,
     incomeSources: Array<IncomeSource>,
     currentMonthValues: CalculatedMonthCompensationValuesByElementType,
     previousMonthsValues: CalculatedCompensationValuesByMonth
-  ): T {
+  ): number {
     if (this.isVirtualElement()) {
       return this.fromState(currentMonthValues, taxMonth, previousMonthsValues);
     }
@@ -77,7 +77,7 @@ export default abstract class CompensationElement<T> {
     throw new Error("Not implemented");
   }
 
-  private isPayslip(incomeSource: IncomeSource): this is IPayslip<T> {
+  private isPayslip(incomeSource: IncomeSource): this is IPayslip {
     return (
       incomeSource.type === IncomeSourceType.PAYSLIP && "fromPayslip" in this
     );
@@ -85,14 +85,14 @@ export default abstract class CompensationElement<T> {
 
   private isManualFixedIncome(
     incomeSource: IncomeSource
-  ): this is IManualFixedIncome<T> {
+  ): this is IManualFixedIncome {
     return (
       incomeSource.type === IncomeSourceType.MANUAL_FIXED &&
       "fromManualFixedIncome" in this
     );
   }
 
-  private isVirtualElement(): this is IVirtualElement<T> {
+  private isVirtualElement(): this is IVirtualElement {
     return "fromState" in this;
   }
 }

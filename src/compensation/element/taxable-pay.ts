@@ -4,7 +4,7 @@ import CompensationElement, {
 } from "src/compensation/element/compensation-element";
 import { formatCurrency } from "src/compensation/formatters";
 
-export default abstract class TaxablePay extends CompensationElement<number> {
+export default abstract class TaxablePay extends CompensationElement {
   type = CompensationElementType.TAXABLE_PAY;
 
   rowLabel = "Taxable pay";

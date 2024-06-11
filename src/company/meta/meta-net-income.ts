@@ -7,7 +7,7 @@ import { CalculatedMonthCompensationValuesByElementType } from "src/state/uk-pay
 
 export default class MetaNetIncome
   extends NetIncome
-  implements IVirtualElement<number>
+  implements IVirtualElement
 {
   dependencies = new Set([
     CompensationElementType.TAXABLE_PAY,

@@ -2,7 +2,7 @@ import { CompensationElementType } from "src/compensation/element/compensation-e
 import NetPay from "src/compensation/element/net-pay";
 import Payslip, { IPayslip } from "src/compensation/income/payslip/payslip";
 
-export default class MetaNetPay extends NetPay implements IPayslip<number> {
+export default class MetaNetPay extends NetPay implements IPayslip {
   dependencies = new Set([
     CompensationElementType.TAXABLE_PAY,
     CompensationElementType.PENSION_TOTAL_AMOUNT,

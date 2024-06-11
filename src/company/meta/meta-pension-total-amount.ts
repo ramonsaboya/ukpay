@@ -7,7 +7,7 @@ import { CalculatedMonthCompensationValuesByElementType } from "src/state/uk-pay
 
 export default class MetaPensionTotalAmount
   extends PensionTotalAmount
-  implements IVirtualElement<number>
+  implements IVirtualElement
 {
   dependencies = new Set([
     CompensationElementType.PENSION_EMPLOYEE_AMOUNT,

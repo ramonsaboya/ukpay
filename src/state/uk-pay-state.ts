@@ -26,7 +26,7 @@ import IncomeSource from "src/compensation/income/income-source";
 import TaxMonth from "src/taxMonth";
 
 export type IncomeSourcesByMonth = Map<TaxMonth, List<IncomeSource>>;
-export type CompensationElements = List<CompensationElement<any>>;
+export type CompensationElements = List<CompensationElement>;
 export type CalculatedMonthCompensationValuesByElementType = Map<
   CompensationElementType,
   any

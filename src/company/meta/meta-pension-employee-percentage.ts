@@ -5,7 +5,7 @@ import { CalculatedMonthCompensationValuesByElementType } from "src/state/uk-pay
 
 export default class MetaPensionEmployeePercentage
   extends PensionEmployeePercentage
-  implements IPayslip<number>
+  implements IPayslip
 {
   dependencies = new Set([
     CompensationElementType.SALARY,

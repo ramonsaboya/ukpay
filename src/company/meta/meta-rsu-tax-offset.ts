@@ -2,10 +2,7 @@ import { CompensationElementType } from "src/compensation/element/compensation-e
 import RSUTaxOffset from "src/compensation/element/rsu-tax-offset";
 import Payslip, { IPayslip } from "src/compensation/income/payslip/payslip";
 
-export default class MetaRSUTaxOffset
-  extends RSUTaxOffset
-  implements IPayslip<number>
-{
+export default class MetaRSUTaxOffset extends RSUTaxOffset implements IPayslip {
   dependencies = new Set<CompensationElementType>();
 
   fromPayslip(payslip: Payslip): number {

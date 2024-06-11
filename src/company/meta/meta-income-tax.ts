@@ -2,10 +2,7 @@ import { CompensationElementType } from "src/compensation/element/compensation-e
 import IncomeTax from "src/compensation/element/income-tax";
 import Payslip, { IPayslip } from "src/compensation/income/payslip/payslip";
 
-export default class MetaIncomeTax
-  extends IncomeTax
-  implements IPayslip<number>
-{
+export default class MetaIncomeTax extends IncomeTax implements IPayslip {
   dependencies = new Set<CompensationElementType>();
 
   fromPayslip(payslip: Payslip): number {

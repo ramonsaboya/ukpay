@@ -4,7 +4,7 @@ import CompensationElement, {
 } from "src/compensation/element/compensation-element";
 import { formatCurrency } from "src/compensation/formatters";
 
-export default abstract class PensionEmployeeAmount extends CompensationElement<number> {
+export default abstract class PensionEmployeeAmount extends CompensationElement {
   type = CompensationElementType.PENSION_EMPLOYEE_AMOUNT;
 
   rowLabel = "Pension - Employee";
