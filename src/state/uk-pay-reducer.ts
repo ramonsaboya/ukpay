@@ -44,6 +44,45 @@ export function ukPayReducer(
         incomeSources: newIncomeSources,
         calculatedCompensationValues,
       };
+    case "SET_EDITING_MONTH":
+      return {
+        ...state,
+        editingMonth: action.month,
+      };
+    case "SAVE_MONTH": {
+      const incomeSource = action.manualFixedIncome;
+      const taxMonth = incomeSource.taxMonth;
+
+      const currentMonthIncomeSources =
+        state.incomeSources.get(taxMonth) ?? List();
+
+      // TODO maybe should replace instead of blocking
+      if (
+        !allowNewIncomeSource(currentMonthIncomeSources.toArray(), incomeSource)
+      ) {
+        throw new Error("Cannot add income source of this type");
+      }
+
+      const newMonthIncomeSources = currentMonthIncomeSources
+        .push(incomeSource)
+        .sort((a, b) => a.order - b.order);
+      const newIncomeSources = state.incomeSources.set(
+        taxMonth,
+        newMonthIncomeSources
+      );
+
+      const calculatedCompensationValues = resolveCompensation(
+        newIncomeSources,
+        state.compensationElements
+      );
+
+      return {
+        ...state,
+        incomeSources: newIncomeSources,
+        calculatedCompensationValues,
+        editingMonth: null,
+      };
+    }
   }
 }
 

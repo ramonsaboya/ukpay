@@ -6,9 +6,9 @@ import {
   useUKPayDispatch,
 } from "src/state/UKPayDispatchContext";
 import { ukPayReducer } from "src/state/uk-pay-reducer";
-import UKPayTable from "src/UKPayTable";
 import { defaultUKPayState } from "src/state/uk-pay-state";
 import ADPPayslip from "src/compensation/income/payslip/adp-payslip";
+import UKPayTable2 from "src/UKPayTable2";
 
 const PAYSLIP_PROVIDER_CLASS: { create(file: File): Promise<Payslip> } =
   ADPPayslip;
@@ -58,7 +58,7 @@ function UKPayRoot() {
       <Box sx={{ display: "flex", gap: 2 }}>
         <input type="file" accept=".pdf" multiple onChange={handleFileUpload} />
       </Box>
-      <UKPayTable />
+      <UKPayTable2 />
     </Box>
   );
 }

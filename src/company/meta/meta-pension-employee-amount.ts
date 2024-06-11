@@ -1,14 +1,27 @@
-import { CompensationElementType } from "src/compensation/element/compensation-element";
+import {
+  CompensationElementType,
+  IVirtualElement,
+} from "src/compensation/element/compensation-element";
 import PensionEmployeeAmount from "src/compensation/element/pension-employee-amount";
-import Payslip, { IPayslip } from "src/compensation/income/payslip/payslip";
+import { CalculatedMonthCompensationValuesByElementType } from "src/state/uk-pay-state";
 
 export default class MetaPensionEmployeeAmount
   extends PensionEmployeeAmount
-  implements IPayslip
+  implements IVirtualElement
 {
-  dependencies = new Set<CompensationElementType>();
+  dependencies = new Set([
+    CompensationElementType.SALARY,
+    CompensationElementType.PENSION_EMPLOYEE_PERCENTAGE,
+  ]);
 
-  fromPayslip(payslip: Payslip): number {
-    return payslip.earnings.getOrDefault("AE PENSION EE", 0) * -1;
+  fromState(
+    currentMonthValues: CalculatedMonthCompensationValuesByElementType
+  ): number {
+    const salary = currentMonthValues.get(CompensationElementType.SALARY)!;
+    const pensionEmployeePercentage = currentMonthValues.get(
+      CompensationElementType.PENSION_EMPLOYEE_PERCENTAGE
+    )!;
+
+    return salary * pensionEmployeePercentage;
   }
 }

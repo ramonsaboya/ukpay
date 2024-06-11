@@ -70,11 +70,16 @@ export default abstract class CompensationElement {
         );
       }
       if (this.isManualFixedIncome(incomeSource)) {
-        return this.fromManualFixedIncome(incomeSource as ManualFixedIncome);
+        return this.fromManualFixedIncome(
+          incomeSource as ManualFixedIncome,
+          currentMonthValues,
+          taxMonth,
+          previousMonthsValues
+        );
       }
     }
 
-    throw new Error("Not implemented");
+    return 0;
   }
 
   private isPayslip(incomeSource: IncomeSource): this is IPayslip {
@@ -83,11 +88,12 @@ export default abstract class CompensationElement {
     );
   }
 
-  private isManualFixedIncome(
-    incomeSource: IncomeSource
+  public isManualFixedIncome(
+    incomeSource?: IncomeSource
   ): this is IManualFixedIncome {
     return (
-      incomeSource.type === IncomeSourceType.MANUAL_FIXED &&
+      (incomeSource === undefined ||
+        incomeSource.type === IncomeSourceType.MANUAL_FIXED) &&
       "fromManualFixedIncome" in this
     );
   }

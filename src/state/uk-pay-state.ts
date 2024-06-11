@@ -39,6 +39,7 @@ export type UKPayState = {
   incomeSources: IncomeSourcesByMonth;
   compensationElements: CompensationElements;
   calculatedCompensationValues: CalculatedCompensationValuesByMonth;
+  editingMonth: TaxMonth | null;
 };
 
 type UKPayStateInitializerArgs = {};
@@ -70,5 +71,6 @@ export function defaultUKPayState(
       new MetaNetIncome(),
     ]),
     calculatedCompensationValues: Map(),
+    editingMonth: null,
   };
 }
