@@ -5,6 +5,7 @@ import ManualFixedIncome, {
   IManualFixedIncome,
 } from "src/compensation/income/manual-fixed-income";
 import Payslip, { IPayslip } from "src/compensation/income/payslip/payslip";
+import { TaxYear } from "src/hmrc/tax-year-builder";
 import {
   CalculatedMonthCompensationValuesByElementType,
   CalculatedCompensationValuesByMonth,
@@ -38,7 +39,8 @@ export interface IVirtualElement {
   fromState(
     currentMonthValues: CalculatedMonthCompensationValuesByElementType,
     taxMonth: TaxMonth,
-    previousMonthsValues: CalculatedCompensationValuesByMonth
+    previousMonthsValues: CalculatedCompensationValuesByMonth,
+    taxYear: TaxYear
   ): number;
 }
 
@@ -54,18 +56,16 @@ export default abstract class CompensationElement {
     taxMonth: TaxMonth,
     incomeSource: IncomeSource,
     currentMonthValues: CalculatedMonthCompensationValuesByElementType,
-    previousMonthsValues: CalculatedCompensationValuesByMonth
+    previousMonthsValues: CalculatedCompensationValuesByMonth,
+    taxYear: TaxYear
   ): number {
-    if (this.isVirtualElement()) {
-      return this.fromState(currentMonthValues, taxMonth, previousMonthsValues);
-    }
-
     if (this.isPayslip(incomeSource)) {
       return this.fromPayslip(
         incomeSource as Payslip,
         currentMonthValues,
         taxMonth,
-        previousMonthsValues
+        previousMonthsValues,
+        taxYear
       );
     }
 
@@ -74,7 +74,17 @@ export default abstract class CompensationElement {
         incomeSource as ManualFixedIncome,
         currentMonthValues,
         taxMonth,
-        previousMonthsValues
+        previousMonthsValues,
+        taxYear
+      );
+    }
+
+    if (this.isVirtualElement()) {
+      return this.fromState(
+        currentMonthValues,
+        taxMonth,
+        previousMonthsValues,
+        taxYear
       );
     }
 

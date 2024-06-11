@@ -1,5 +1,6 @@
 import { Map as ImmutableMap } from "immutable";
 import { CompensationElementType } from "src/compensation/element/compensation-element";
+import { TaxYear } from "src/hmrc/tax-year-builder";
 import {
   IncomeSourceByMonth,
   CalculatedCompensationValuesByMonth,
@@ -11,7 +12,8 @@ import { TAX_MONTHS } from "src/taxMonth";
 export default function resolveCompensation(
   incomeSources: IncomeSourceByMonth,
   compensationElements: CompensationElementByType,
-  compensationElementsTopologicalOrder: ReadonlyArray<CompensationElementType>
+  compensationElementsTopologicalOrder: ReadonlyArray<CompensationElementType>,
+  taxYear: TaxYear
 ): CalculatedCompensationValuesByMonth {
   let calculatedValues: CalculatedCompensationValuesByMonth = ImmutableMap();
 
@@ -31,7 +33,8 @@ export default function resolveCompensation(
           taxMonth,
           incomeSource,
           currentMonthValues,
-          calculatedValues
+          calculatedValues,
+          taxYear
         );
 
         currentMonthValues = currentMonthValues.set(element.type, value);

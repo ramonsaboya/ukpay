@@ -1,3 +1,5 @@
+import TaxMonth, { taxMonthFromPeriod } from "src/taxMonth";
+
 export type BandWithThreshold = {
   name: string;
   rate: number;
@@ -10,20 +12,7 @@ export type TaxYearMonth = {
   taxRates: Array<BandWithThreshold>;
   nationalInsuranceRates: Array<BandWithThreshold>;
 };
-export type TaxYear = [
-  TaxYearMonth,
-  TaxYearMonth,
-  TaxYearMonth,
-  TaxYearMonth,
-  TaxYearMonth,
-  TaxYearMonth,
-  TaxYearMonth,
-  TaxYearMonth,
-  TaxYearMonth,
-  TaxYearMonth,
-  TaxYearMonth,
-  TaxYearMonth
-];
+export type TaxYear = Map<TaxMonth, TaxYearMonth>;
 
 export default function taxYearBuilder(
   ...repeatingTaxYearMonths: [number, TaxYearMonth][]
@@ -37,7 +26,7 @@ export default function taxYearBuilder(
     throw new Error("The sum of repeating times should be 12");
   }
 
-  return repeatingTaxYearMonths.reduce(
+  const taxYearMonths = repeatingTaxYearMonths.reduce(
     (acc, [repeatingTimes, taxYearMonth]) => {
       for (let i = 0; i < repeatingTimes; i++) {
         acc.push(taxYearMonth);
@@ -45,5 +34,9 @@ export default function taxYearBuilder(
       return acc;
     },
     [] as TaxYearMonth[]
-  ) as TaxYear;
+  );
+
+  return new Map(
+    taxYearMonths.map((month, i) => [taxMonthFromPeriod(i + 1), month])
+  );
 }

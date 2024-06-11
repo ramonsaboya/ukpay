@@ -35,7 +35,8 @@ function registerIncomeSource(
   const calculatedCompensationValues = resolveCompensation(
     newIncomeSources,
     state.compensationElements,
-    state.compensationElementsTopologicalOrder
+    state.compensationElementsTopologicalOrder,
+    state.taxYear
   );
 
   return {
