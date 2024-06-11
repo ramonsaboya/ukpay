@@ -32,6 +32,18 @@ export default function Home() {
           </CardContent>
         </CardActionArea>
       </Card>
+      <Card sx={{ maxWidth: 345 }}>
+        <CardActionArea component={Link} to={"/ukpay/current-tax-year"}>
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="div">
+              Current tax year
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Analyse your compensation for the current tax year
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+      </Card>
     </Box>
   );
 }

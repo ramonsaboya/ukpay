@@ -8,6 +8,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import Home from "src/pages/Home";
 import PastTaxYear from "src/pages/PastTaxYear";
+import CurrentTaxYear from "src/pages/CurrentTaxYear";
 
 let workerBlob = new Blob([workerContent], { type: "text/javascript" });
 let workerBlobURL = URL.createObjectURL(workerBlob);
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
   {
     path: "/ukpay/past-tax-year",
     element: <PastTaxYear />,
+  },
+  {
+    path: "/ukpay/current-tax-year",
+    element: <CurrentTaxYear />,
   },
 ]);
 
