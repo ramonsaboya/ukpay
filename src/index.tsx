@@ -5,10 +5,10 @@ import { pdfjs } from "react-pdf";
 import workerContent from "./pdf.worker.min.json";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import "./index.css";
 import Home from "src/pages/Home";
 import PastTaxYear from "src/pages/PastTaxYear";
 import CurrentTaxYear from "src/pages/CurrentTaxYear";
+import { CssBaseline } from "@mui/material";
 
 let workerBlob = new Blob([workerContent], { type: "text/javascript" });
 let workerBlobURL = URL.createObjectURL(workerBlob);
@@ -35,6 +35,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
+    <CssBaseline />
     <RouterProvider router={router} />
   </React.StrictMode>
 );

@@ -44,12 +44,17 @@ export interface IVirtualElement {
   ): number;
 }
 
+export type Formatter = {
+  display: (value: number) => string;
+  editAddOn: string;
+};
+
 export default abstract class CompensationElement {
   public abstract readonly type: CompensationElementType;
   public abstract readonly dependencies: Set<CompensationElementType>;
 
   public abstract readonly rowLabel: string;
-  public abstract readonly formatter: (value: number) => string;
+  public abstract readonly formatter: Formatter;
   public abstract readonly aggregate: ((values: number[]) => number) | null;
 
   public calculate(
