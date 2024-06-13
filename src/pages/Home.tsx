@@ -11,39 +11,54 @@ export default function Home() {
   return (
     <Box
       sx={{
-        backgroundColor: "grey",
         height: "100vh",
         display: "flex",
-        flexDirection: "column",
+        flexDirection: "row",
+        flexWrap: "wrap",
+        gap: 2,
         padding: 4,
         justifyContent: "center",
         alignItems: "center",
       }}
     >
-      <Card sx={{ maxWidth: 345 }}>
-        <CardActionArea component={Link} to={"/ukpay/past-tax-year"}>
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              Past tax year
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Analyse your payslips from a past tax year
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-      </Card>
-      <Card sx={{ maxWidth: 345 }}>
-        <CardActionArea component={Link} to={"/ukpay/current-tax-year"}>
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              Current tax year
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Analyse your compensation for the current tax year
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-      </Card>
+      <PageCard
+        title="Past tax year"
+        description="Analyse your payslips from a past tax year"
+        link="/ukpay/past-tax-year"
+      />
+      <PageCard
+        title="Current tax year"
+        description="Analyse your compensation for the current tax year"
+        link="/ukpay/current-tax-year"
+      />
     </Box>
+  );
+}
+
+type PageCardProps = {
+  title: string;
+  description: string;
+  link: string;
+};
+function PageCard({ title, description, link }: PageCardProps) {
+  return (
+    <Card>
+      <CardActionArea component={Link} to={link}>
+        <CardContent
+          sx={{
+            height: "20vh",
+            width: "30vh",
+            backgroundColor: "rgba(220, 220, 220, 0.5)",
+          }}
+        >
+          <Typography gutterBottom variant="h5" component="div">
+            {title}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {description}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+    </Card>
   );
 }
