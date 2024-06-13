@@ -1,10 +1,19 @@
-export function formatCurrency(value: number): string {
-  return value.toLocaleString("en-GB", {
-    style: "currency",
-    currency: "GBP",
-  });
+import { Formatter } from "src/compensation/element/compensation-element";
+
+export function currencyFormatter(): Formatter {
+  return {
+    display: (value: number) =>
+      value.toLocaleString("en-GB", {
+        style: "currency",
+        currency: "GBP",
+      }),
+    editAddOn: "£",
+  };
 }
 
-export function formatPercentage(value: number): string {
-  return `${(value * 100).toFixed(0)}%`;
+export function percentageFormatter(): Formatter {
+  return {
+    display: (value: number) => `${(value * 100).toFixed(0)}%`,
+    editAddOn: "%",
+  };
 }

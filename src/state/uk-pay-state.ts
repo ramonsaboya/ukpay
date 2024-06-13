@@ -45,7 +45,6 @@ export type UKPayState = {
   compensationElements: CompensationElementByType;
   compensationElementsTopologicalOrder: ReadonlyArray<CompensationElementType>;
   calculatedCompensationValues: CalculatedCompensationValuesByMonth;
-  editingMonth: TaxMonth | null;
   taxYear: TaxYear;
   allowEditing: boolean;
 };
@@ -84,7 +83,6 @@ export function defaultUKPayState(args: UKPayStateInitializerArgs): UKPayState {
     compensationElements,
     compensationElementsTopologicalOrder: toposort(compensationElements),
     calculatedCompensationValues: ImmutableMap(),
-    editingMonth: null,
     taxYear: taxYear2023_24,
     allowEditing: args.allowEditing,
   };

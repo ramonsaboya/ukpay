@@ -12,7 +12,7 @@ export default class MetaPensionEmployeePercentage
   dependencies = new Set([CompensationElementType.SALARY]);
 
   fromManualFixedIncome(manualFixedIncome: MetaManualFixedIncome): number {
-    return manualFixedIncome.pensionEmployeePercentage / 100;
+    return Math.floor(manualFixedIncome.pensionEmployeePercentage) / 100;
   }
 
   fromPayslip(
@@ -22,6 +22,6 @@ export default class MetaPensionEmployeePercentage
     const salary = currentMonthValues.get(CompensationElementType.SALARY)!;
     const pensionEmployeeAmount = payslip.earnings.get("AE PENSION EE")! * -1;
 
-    return pensionEmployeeAmount / salary;
+    return Math.round((pensionEmployeeAmount / salary) * 100) / 100;
   }
 }
