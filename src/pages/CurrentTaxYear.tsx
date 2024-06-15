@@ -7,7 +7,7 @@ import CompensationSummary from "src/summary/CompensationSummary";
 export default function PastTaxYear() {
   const [state, dispatch] = useReducer(
     ukPayReducer,
-    { allowEditing: true },
+    { allowEditing: true, taxYear: "2024/25" },
     defaultUKPayState
   );
 

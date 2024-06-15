@@ -1,4 +1,4 @@
-import TaxMonth from "src/taxMonth";
+import TaxMonth from "src/hmrc/tax-month";
 
 export enum IncomeSourceType {
   PAYSLIP,

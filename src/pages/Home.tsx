@@ -25,12 +25,12 @@ export default function Home() {
       >
         <PageCard
           title="Past tax year"
-          description="Analyse your payslips from a past tax year"
+          description="Analyse your payslips from 2023/24"
           link="/ukpay/past-tax-year"
         />
         <PageCard
           title="Current tax year"
-          description="Analyse your compensation for the current tax year"
+          description="Analyse your compensation for 2024/25"
           link="/ukpay/current-tax-year"
         />
       </Box>

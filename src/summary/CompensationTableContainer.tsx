@@ -5,7 +5,7 @@ import {
   useUKPayDispatch,
   useUKPayState,
 } from "src/state/UKPayDispatchContext";
-import TaxMonth, { TAX_MONTHS, taxMonthLabel } from "src/taxMonth";
+import TaxMonth, { TAX_MONTHS, taxMonthLabel } from "src/hmrc/tax-month";
 import { CompensationElementType } from "src/compensation/element/compensation-element";
 import {
   CalculatedCompensationValuesByMonth,

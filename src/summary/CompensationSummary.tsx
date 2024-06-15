@@ -2,7 +2,10 @@ import { Alert, Box, Button, styled } from "@mui/material";
 import ADPPayslip from "src/compensation/income/payslip/adp-payslip";
 import Payslip from "src/compensation/income/payslip/payslip";
 import PageStructure, { DrawerContentRenderer } from "src/pages/PageStructure";
-import { useUKPayDispatch } from "src/state/UKPayDispatchContext";
+import {
+  useUKPayDispatch,
+  useUKPayState,
+} from "src/state/UKPayDispatchContext";
 import CompensationTableContainer from "src/summary/CompensationTableContainer";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
@@ -22,6 +25,7 @@ const PAYSLIP_PROVIDER_CLASS: { create(file: File): Promise<Payslip> } =
   ADPPayslip;
 
 export default function CompensationSummary() {
+  const { taxYear } = useUKPayState();
   const dispatch = useUKPayDispatch();
 
   async function handleFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
@@ -74,7 +78,11 @@ export default function CompensationSummary() {
   )) as DrawerContentRenderer;
 
   return (
-    <PageStructure drawerContent={DrawerContent} defaultDrawerState="open">
+    <PageStructure
+      drawerContent={DrawerContent}
+      title={taxYear.key}
+      defaultDrawerState="open"
+    >
       <Box
         sx={{
           display: "flex",

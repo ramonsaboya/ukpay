@@ -4,12 +4,12 @@ import {
 } from "src/compensation/element/compensation-element";
 import IncomeTax from "src/compensation/element/income-tax";
 import Payslip, { IPayslip } from "src/compensation/income/payslip/payslip";
-import { TaxYear } from "src/hmrc/tax-year-builder";
+import { TaxYear } from "src/hmrc/tax-year";
 import {
   CalculatedMonthCompensationValuesByElementType,
   CalculatedCompensationValuesByMonth,
 } from "src/state/uk-pay-state";
-import TaxMonth from "src/taxMonth";
+import TaxMonth from "src/hmrc/tax-month";
 
 export default class MetaIncomeTax
   extends IncomeTax
@@ -40,7 +40,7 @@ export default class MetaIncomeTax
         CompensationElementType.INCOME_TAX
       );
 
-    const cumulativeTaxPaid = taxYear
+    const cumulativeTaxPaid = taxYear.taxYearMonths
       .get(taxMonth)!
       .taxRates.reduce((acc, band) => {
         const cumulativeLowerLimit = (band.annualLowerLimit / 12) * taxMonth;

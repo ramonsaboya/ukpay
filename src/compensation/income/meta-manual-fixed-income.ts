@@ -1,6 +1,6 @@
 import { CompensationElementType } from "src/compensation/element/compensation-element";
 import ManualFixedIncome from "src/compensation/income/manual-fixed-income";
-import TaxMonth from "src/taxMonth";
+import TaxMonth from "src/hmrc/tax-month";
 
 export default class MetaManualFixedIncome extends ManualFixedIncome {
   public readonly salary: number;

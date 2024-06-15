@@ -2,7 +2,7 @@ import { getDocument } from "pdfjs-dist";
 import { TextItem, TextMarkedContent } from "pdfjs-dist/types/src/display/api";
 import PayslipItemList from "src/compensation/income/payslip/paylist-item-list";
 import Payslip from "src/compensation/income/payslip/payslip";
-import TaxMonth, { taxMonthFromPeriod } from "src/taxMonth";
+import TaxMonth, { taxMonthFromPeriod } from "src/hmrc/tax-month";
 
 type PDFToken = {
   originalStr_DO_NOT_USE: string;

@@ -23,9 +23,8 @@ import CompensationElement, {
   CompensationElementType,
 } from "src/compensation/element/compensation-element";
 import IncomeSource from "src/compensation/income/income-source";
-import TaxMonth from "src/taxMonth";
-import { TaxYear } from "src/hmrc/tax-year-builder";
-import taxYear2023_24 from "src/hmrc/tax-year-2023-24";
+import TaxMonth from "src/hmrc/tax-month";
+import { TAX_YEARS, TaxYear } from "src/hmrc/tax-year";
 
 export type IncomeSourceByMonth = ImmutableMap<TaxMonth, IncomeSource>;
 export type CompensationElementByType = ImmutableMap<
@@ -51,6 +50,7 @@ export type UKPayState = {
 
 type UKPayStateInitializerArgs = {
   allowEditing: boolean;
+  taxYear: string;
 };
 export function defaultUKPayState(args: UKPayStateInitializerArgs): UKPayState {
   const compensationElements = ImmutableMap(
@@ -83,7 +83,7 @@ export function defaultUKPayState(args: UKPayStateInitializerArgs): UKPayState {
     compensationElements,
     compensationElementsTopologicalOrder: toposort(compensationElements),
     calculatedCompensationValues: ImmutableMap(),
-    taxYear: taxYear2023_24,
+    taxYear: TAX_YEARS.get(args.taxYear)!,
     allowEditing: args.allowEditing,
   };
 }
