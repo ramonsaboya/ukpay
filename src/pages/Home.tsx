@@ -6,32 +6,35 @@ import {
   Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import PageStructure from "src/pages/PageStructure";
 
 export default function Home() {
   return (
-    <Box
-      sx={{
-        height: "100vh",
-        display: "flex",
-        flexDirection: "row",
-        flexWrap: "wrap",
-        gap: 2,
-        padding: 4,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <PageCard
-        title="Past tax year"
-        description="Analyse your payslips from a past tax year"
-        link="/ukpay/past-tax-year"
-      />
-      <PageCard
-        title="Current tax year"
-        description="Analyse your compensation for the current tax year"
-        link="/ukpay/current-tax-year"
-      />
-    </Box>
+    <PageStructure hideDrawer>
+      <Box
+        sx={{
+          height: "100%",
+          display: "flex",
+          flexDirection: "row",
+          flexWrap: "wrap",
+          gap: 2,
+          padding: 4,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <PageCard
+          title="Past tax year"
+          description="Analyse your payslips from a past tax year"
+          link="/ukpay/past-tax-year"
+        />
+        <PageCard
+          title="Current tax year"
+          description="Analyse your compensation for the current tax year"
+          link="/ukpay/current-tax-year"
+        />
+      </Box>
+    </PageStructure>
   );
 }
 

@@ -1,12 +1,10 @@
-import { Button, Box, styled } from "@mui/material";
-import { useUKPayDispatch } from "src/state/UKPayDispatchContext";
+import { Alert, Box, Button, styled } from "@mui/material";
 import ADPPayslip from "src/compensation/income/payslip/adp-payslip";
 import Payslip from "src/compensation/income/payslip/payslip";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import PageStructure, { DrawerContentRenderer } from "src/pages/PageStructure";
+import { useUKPayDispatch } from "src/state/UKPayDispatchContext";
 import CompensationTableContainer from "src/summary/CompensationTableContainer";
-
-const PAYSLIP_PROVIDER_CLASS: { create(file: File): Promise<Payslip> } =
-  ADPPayslip;
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -19,6 +17,9 @@ const VisuallyHiddenInput = styled("input")({
   whiteSpace: "nowrap",
   width: 1,
 });
+
+const PAYSLIP_PROVIDER_CLASS: { create(file: File): Promise<Payslip> } =
+  ADPPayslip;
 
 export default function CompensationSummary() {
   const dispatch = useUKPayDispatch();
@@ -38,37 +39,53 @@ export default function CompensationSummary() {
     await Promise.all(payslipCreators);
   }
 
-  return (
+  const drawerContent = ((setIsDrawerOpen) => (
     <Box
       sx={{
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        height: "100%",
-        width: "100vw",
+        margin: 1,
+        gap: 1,
       }}
     >
+      <Button
+        component="label"
+        variant="contained"
+        size="small"
+        startIcon={<CloudUploadIcon />}
+      >
+        Upload payslips
+        <VisuallyHiddenInput
+          type="file"
+          accept=".pdf"
+          multiple
+          onChange={(event) => {
+            handleFileUpload(event).then(() => setIsDrawerOpen(false));
+          }}
+        />
+      </Button>
+      <Alert severity="info">
+        Payslips are processed locally in your browser and no data is sent to
+        any server.
+      </Alert>
+      <Alert severity="info">You may turn off your internet connection.</Alert>
+    </Box>
+  )) as DrawerContentRenderer;
+
+  return (
+    <PageStructure drawerContent={drawerContent} defaultDrawerState="open">
       <Box
         sx={{
-          padding: 1,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          height: "100%",
+          width: "100%",
         }}
       >
-        <Button
-          component="label"
-          variant="contained"
-          tabIndex={-1}
-          startIcon={<CloudUploadIcon />}
-        >
-          Upload payslips
-          <VisuallyHiddenInput
-            type="file"
-            accept=".pdf"
-            multiple
-            onChange={handleFileUpload}
-          />
-        </Button>
+        <CompensationTableContainer />
       </Box>
-      <CompensationTableContainer />
-    </Box>
+    </PageStructure>
   );
 }
