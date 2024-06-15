@@ -39,7 +39,7 @@ export default function CompensationSummary() {
     await Promise.all(payslipCreators);
   }
 
-  const drawerContent = ((setIsDrawerOpen) => (
+  const DrawerContent = ((setIsDrawerOpen) => (
     <Box
       sx={{
         display: "flex",
@@ -74,7 +74,7 @@ export default function CompensationSummary() {
   )) as DrawerContentRenderer;
 
   return (
-    <PageStructure drawerContent={drawerContent} defaultDrawerState="open">
+    <PageStructure drawerContent={DrawerContent} defaultDrawerState="open">
       <Box
         sx={{
           display: "flex",
