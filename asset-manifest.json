@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/ukpay/static/js/main.531fd190.js",
+    "main.js": "/ukpay/static/js/main.d472152d.js",
     "index.html": "/ukpay/index.html",
-    "main.531fd190.js.map": "/ukpay/static/js/main.531fd190.js.map"
+    "main.d472152d.js.map": "/ukpay/static/js/main.d472152d.js.map"
   },
   "entrypoints": [
-    "static/js/main.531fd190.js"
+    "static/js/main.d472152d.js"
   ]
 }
