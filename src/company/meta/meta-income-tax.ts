@@ -24,8 +24,8 @@ export default class MetaIncomeTax
   fromState(
     currentMonthValues: CalculatedMonthCompensationValuesByElementType,
     taxMonth: TaxMonth,
-    previousMonthsValues: CalculatedCompensationValuesByMonth,
-    taxYear: TaxYear
+    taxYear: TaxYear,
+    previousMonthsValues: CalculatedCompensationValuesByMonth
   ): number {
     const cumulativeTaxablePay =
       this.calculateCumulativeElementUntilLastMonth(

@@ -1,20 +1,12 @@
 import { IncomeSourceType } from "src/compensation/income/income-source";
 import IncomeSourceFixed from "src/compensation/income/income-source-fixed";
 import PayslipItemList from "src/compensation/income/payslip/paylist-item-list";
-import { TaxYear } from "src/hmrc/tax-year";
-import {
-  CalculatedMonthCompensationValuesByElementType,
-  CalculatedCompensationValuesByMonth,
-} from "src/state/uk-pay-state";
-import TaxMonth from "src/hmrc/tax-month";
+import { CalculatedMonthCompensationValuesByElementType } from "src/state/uk-pay-state";
 
 export interface IPayslip {
   fromPayslip(
     payslip: Payslip,
-    currentMonthValues: CalculatedMonthCompensationValuesByElementType,
-    taxMonth: TaxMonth,
-    previousMonthsValues: CalculatedCompensationValuesByMonth,
-    taxYear: TaxYear
+    currentMonthValues: CalculatedMonthCompensationValuesByElementType
   ): number;
 }
 

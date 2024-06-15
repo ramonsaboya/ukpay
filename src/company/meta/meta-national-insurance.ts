@@ -5,10 +5,7 @@ import {
 import NationalInsurance from "src/compensation/element/national-insurance";
 import Payslip, { IPayslip } from "src/compensation/income/payslip/payslip";
 import { TaxYear } from "src/hmrc/tax-year";
-import {
-  CalculatedMonthCompensationValuesByElementType,
-  CalculatedCompensationValuesByMonth,
-} from "src/state/uk-pay-state";
+import { CalculatedMonthCompensationValuesByElementType } from "src/state/uk-pay-state";
 import TaxMonth from "src/hmrc/tax-month";
 
 export default class MetaNationalInsurance
@@ -24,7 +21,6 @@ export default class MetaNationalInsurance
   fromState(
     currentMonthValues: CalculatedMonthCompensationValuesByElementType,
     taxMonth: TaxMonth,
-    previousMonthsValues: CalculatedCompensationValuesByMonth,
     taxYear: TaxYear
   ): number {
     const taxablePay = currentMonthValues.get(

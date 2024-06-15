@@ -39,8 +39,8 @@ export interface IVirtualElement {
   fromState(
     currentMonthValues: CalculatedMonthCompensationValuesByElementType,
     taxMonth: TaxMonth,
-    previousMonthsValues: CalculatedCompensationValuesByMonth,
-    taxYear: TaxYear
+    taxYear: TaxYear,
+    previousMonthsValues: CalculatedCompensationValuesByMonth
   ): number;
 }
 
@@ -65,31 +65,19 @@ export default abstract class CompensationElement {
     taxYear: TaxYear
   ): number {
     if (this.isPayslip(incomeSource)) {
-      return this.fromPayslip(
-        incomeSource as Payslip,
-        currentMonthValues,
-        taxMonth,
-        previousMonthsValues,
-        taxYear
-      );
+      return this.fromPayslip(incomeSource as Payslip, currentMonthValues);
     }
 
     if (this.isManualFixedIncome(incomeSource)) {
-      return this.fromManualFixedIncome(
-        incomeSource as ManualFixedIncome,
-        currentMonthValues,
-        taxMonth,
-        previousMonthsValues,
-        taxYear
-      );
+      return this.fromManualFixedIncome(incomeSource as ManualFixedIncome);
     }
 
     if (this.isVirtualElement()) {
       return this.fromState(
         currentMonthValues,
         taxMonth,
-        previousMonthsValues,
-        taxYear
+        taxYear,
+        previousMonthsValues
       );
     }
 
