@@ -8,6 +8,7 @@ import {
   Divider,
   Box,
   CssBaseline,
+  Link,
 } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import GitHubIcon from "@mui/icons-material/GitHub";
@@ -19,17 +20,21 @@ const drawerWidth = 300;
 export type DrawerContentRenderer = (
   setOpen: (open: boolean) => void
 ) => React.ReactNode;
-export default function PageStructure({
-  children,
-  drawerContent,
-  hideDrawer,
-  defaultDrawerState = "closed",
-}: {
+
+type Props = {
   children: React.ReactNode;
+  title?: string;
   drawerContent?: React.ReactNode | DrawerContentRenderer;
   hideDrawer?: boolean;
   defaultDrawerState?: "open" | "closed";
-}) {
+};
+export default function PageStructure({
+  children,
+  title,
+  drawerContent,
+  hideDrawer,
+  defaultDrawerState = "closed",
+}: Props) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(
     defaultDrawerState === "open"
   );
@@ -53,8 +58,28 @@ export default function PageStructure({
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            UK Pay
+          <Link
+            href="/ukpay"
+            sx={{
+              textDecoration: "none",
+              color: "white",
+              flexGrow: 1,
+            }}
+          >
+            <Typography variant="h6" component="div">
+              UK Pay
+            </Typography>
+          </Link>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{
+              position: "fixed",
+              left: "50%",
+              transform: "translate(-50%, 0%)",
+            }}
+          >
+            {title}
           </Typography>
           <Typography component="div">
             {"You can also run locally ->"}

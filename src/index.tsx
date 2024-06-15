@@ -8,11 +8,14 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "src/pages/Home";
 import PastTaxYear from "src/pages/PastTaxYear";
 import CurrentTaxYear from "src/pages/CurrentTaxYear";
+import { loadTaxYears } from "src/hmrc/tax-year";
 
 let workerBlob = new Blob([workerContent], { type: "text/javascript" });
 let workerBlobURL = URL.createObjectURL(workerBlob);
 
 pdfjs.GlobalWorkerOptions.workerSrc = workerBlobURL;
+
+loadTaxYears();
 
 const router = createBrowserRouter([
   {

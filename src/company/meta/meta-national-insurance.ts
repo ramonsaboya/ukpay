@@ -4,12 +4,12 @@ import {
 } from "src/compensation/element/compensation-element";
 import NationalInsurance from "src/compensation/element/national-insurance";
 import Payslip, { IPayslip } from "src/compensation/income/payslip/payslip";
-import { TaxYear } from "src/hmrc/tax-year-builder";
+import { TaxYear } from "src/hmrc/tax-year";
 import {
   CalculatedMonthCompensationValuesByElementType,
   CalculatedCompensationValuesByMonth,
 } from "src/state/uk-pay-state";
-import TaxMonth from "src/taxMonth";
+import TaxMonth from "src/hmrc/tax-month";
 
 export default class MetaNationalInsurance
   extends NationalInsurance
@@ -31,17 +31,19 @@ export default class MetaNationalInsurance
       CompensationElementType.TAXABLE_PAY
     )!;
 
-    return taxYear.get(taxMonth)!.nationalInsuranceRates.reduce((acc, band) => {
-      const lowerLimit = band.annualLowerLimit / 12;
-      const upperLimit = band.annualUpperLimit / 12;
+    return taxYear.taxYearMonths
+      .get(taxMonth)!
+      .nationalInsuranceRates.reduce((acc, band) => {
+        const lowerLimit = band.annualLowerLimit / 12;
+        const upperLimit = band.annualUpperLimit / 12;
 
-      const payInBand = Math.max(
-        0,
-        Math.min(taxablePay, upperLimit) - lowerLimit
-      );
-      const nationalInsuranceInBand = payInBand * band.rate;
+        const payInBand = Math.max(
+          0,
+          Math.min(taxablePay, upperLimit) - lowerLimit
+        );
+        const nationalInsuranceInBand = payInBand * band.rate;
 
-      return acc + nationalInsuranceInBand;
-    }, 0);
+        return acc + nationalInsuranceInBand;
+      }, 0);
   }
 }

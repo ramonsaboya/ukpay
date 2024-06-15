@@ -1,13 +1,13 @@
 import { Map as ImmutableMap } from "immutable";
 import { CompensationElementType } from "src/compensation/element/compensation-element";
-import { TaxYear } from "src/hmrc/tax-year-builder";
+import { TaxYear } from "src/hmrc/tax-year";
 import {
   IncomeSourceByMonth,
   CalculatedCompensationValuesByMonth,
   CalculatedMonthCompensationValuesByElementType,
   CompensationElementByType,
 } from "src/state/uk-pay-state";
-import { TAX_MONTHS } from "src/taxMonth";
+import { TAX_MONTHS } from "src/hmrc/tax-month";
 
 export default function resolveCompensation(
   incomeSources: IncomeSourceByMonth,

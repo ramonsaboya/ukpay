@@ -5,12 +5,12 @@ import ManualFixedIncome, {
   IManualFixedIncome,
 } from "src/compensation/income/manual-fixed-income";
 import Payslip, { IPayslip } from "src/compensation/income/payslip/payslip";
-import { TaxYear } from "src/hmrc/tax-year-builder";
+import { TaxYear } from "src/hmrc/tax-year";
 import {
   CalculatedMonthCompensationValuesByElementType,
   CalculatedCompensationValuesByMonth,
 } from "src/state/uk-pay-state";
-import TaxMonth from "src/taxMonth";
+import TaxMonth from "src/hmrc/tax-month";
 
 export enum CompensationElementType {
   SALARY,

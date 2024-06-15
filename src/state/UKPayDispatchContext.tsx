@@ -7,7 +7,7 @@ type DispatchContextType = (action: UKPayAction) => void;
 const DispatchContext = React.createContext<DispatchContextType>(() => {});
 
 const UKPayStateContext = React.createContext<UKPayState>(
-  defaultUKPayState({ allowEditing: false })
+  defaultUKPayState({ allowEditing: false, taxYear: "" })
 );
 
 export function UKPayDispatchContext({
