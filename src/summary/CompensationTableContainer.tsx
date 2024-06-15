@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, IconButton, InputAdornment, TextField } from "@mui/material";
+import { Box } from "@mui/material";
 import { Map as ImmutableMap } from "immutable";
 import {
   useUKPayDispatch,
@@ -14,10 +14,9 @@ import {
 import CompensationTable from "src/summary/CompensationTable";
 import { MRT_ColumnDef } from "material-react-table";
 import MetaManualFixedIncome from "src/compensation/income/meta-manual-fixed-income";
-import EditIcon from "@mui/icons-material/Edit";
-import SaveIcon from "@mui/icons-material/Save";
-import LockIcon from "@mui/icons-material/Lock";
 import { IncomeSourceType } from "src/compensation/income/income-source";
+import HeaderCellIcon from "src/summary/HeaderCellIcon";
+import EditableCompensationCell from "src/summary/EditableCompensationCell";
 
 export type CompensationRow = {
   elementType: CompensationElementType;
@@ -158,52 +157,21 @@ function getMonthColumns({
 }: MonthColumnsArgs): MRT_ColumnDef<CompensationRow>[] {
   const headerRenderer: (
     taxMonth: TaxMonth
-  ) => MRT_ColumnDef<CompensationRow>["Header"] =
-    (taxMonth: TaxMonth) => () => {
-      const canEditMonth = allowEditing && !lockedMonths.has(taxMonth);
-
-      return (
-        <>
-          {canEditMonth ? (
-            <IconButton
-              size="small"
-              disabled={
-                (editingMonth !== null && editingMonth !== taxMonth) ||
-                hasErrors
-              }
-              onClick={() => {
-                if (editingMonth === taxMonth) {
-                  onEditSave(taxMonth);
-                } else {
-                  onStartEditing(taxMonth);
-                }
-              }}
-            >
-              {editingMonth !== taxMonth ? (
-                <EditIcon
-                  fontSize="small"
-                  sx={{ height: "16px", width: "16px", marginTop: "-2px" }}
-                />
-              ) : (
-                <SaveIcon
-                  fontSize="small"
-                  sx={{ height: "16px", width: "16px", marginTop: "-2px" }}
-                  color={!hasErrors ? "primary" : "disabled"}
-                />
-              )}
-            </IconButton>
-          ) : (
-            <IconButton size="small" disabled>
-              <LockIcon
-                fontSize="small"
-                sx={{ height: "16px", width: "16px", marginTop: "-2px" }}
-              />
-            </IconButton>
-          )}
-          {taxMonthLabel(taxMonth)}
-        </>
-      );
-    };
+  ) => MRT_ColumnDef<CompensationRow>["Header"] = (taxMonth: TaxMonth) => () =>
+    (
+      <>
+        <HeaderCellIcon
+          allowEditing={allowEditing}
+          lockedMonths={lockedMonths}
+          taxMonth={taxMonth}
+          editingMonth={editingMonth}
+          hasErrors={hasErrors}
+          onStartEditing={onStartEditing}
+          onEditSave={onEditSave}
+        />
+        {taxMonthLabel(taxMonth)}
+      </>
+    );
 
   const cellRenderer: (
     taxMonth: TaxMonth
@@ -213,39 +181,17 @@ function getMonthColumns({
       const compensationRow = row.original;
       if (editingMonth === taxMonth && compensationRow.isEditable) {
         return (
-          <TextField
-            size="small"
+          <EditableCompensationCell
             value={getEditingCellValue(compensationRow)}
-            onChange={(event) => onEdit(compensationRow, event.target.value)}
-            onKeyDown={(event) => {
-              if (editingMonth === taxMonth && event.key === "Enter") {
+            onValueChange={(event) =>
+              onEdit(compensationRow, event.target.value)
+            }
+            onPressEnter={() => {
+              if (editingMonth === taxMonth) {
                 onEditSave(taxMonth);
               }
             }}
-            error={Number.isNaN(Number(getEditingCellValue(compensationRow)))}
-            variant="standard"
-            fullWidth={false}
-            margin="none"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  {row.original.editAddOn}
-                </InputAdornment>
-              ),
-            }}
-            inputProps={{
-              style: {
-                height: "14px",
-                textAlign: "right",
-                fontSize: "0.875rem",
-              },
-            }}
-            sx={{
-              // makes sure that the value will still be aligned with other columns
-              marginTop: "2px",
-              marginBottom: "-2px",
-              marginLeft: "15px",
-            }}
+            addOnSymbol={compensationRow.editAddOn}
           />
         );
       }
