@@ -14,55 +14,7 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
-// TODO gotta clean up this whole file
-
-const drawerWidth = 240;
-
-const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
-  open?: boolean;
-}>(({ theme, open }) => ({
-  flexGrow: 1,
-  transition: theme.transitions.create("margin", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  marginLeft: `-${drawerWidth}px`,
-  ...(open && {
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
-  }),
-}));
-
-interface AppBarProps extends MuiAppBarProps {
-  open?: boolean;
-}
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
-})<AppBarProps>(({ theme, open }) => ({
-  transition: theme.transitions.create(["margin", "width"], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: `${drawerWidth}px`,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
-
-const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-  justifyContent: "flex-end",
-}));
+const drawerWidth = 300;
 
 export type DrawerContentRenderer = (
   setOpen: (open: boolean) => void
@@ -78,20 +30,14 @@ export default function PageStructure({
   hideDrawer?: boolean;
   defaultDrawerState?: "open" | "closed";
 }) {
-  const [open, setOpen] = useState(defaultDrawerState === "open");
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+  const [isDrawerOpen, setIsDrawerOpen] = useState(
+    defaultDrawerState === "open"
+  );
 
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" isDrawerOpen={isDrawerOpen}>
         <Toolbar>
           <IconButton
             size="large"
@@ -100,10 +46,10 @@ export default function PageStructure({
             aria-label="menu"
             sx={{
               mr: 2,
-              ...(open && { display: "none" }),
+              ...(isDrawerOpen && { display: "none" }),
               ...(hideDrawer && { display: "none" }),
             }}
-            onClick={handleDrawerOpen}
+            onClick={() => setIsDrawerOpen(true)}
           >
             <MenuIcon />
           </IconButton>
@@ -133,22 +79,70 @@ export default function PageStructure({
         }}
         variant="persistent"
         anchor="left"
-        open={open}
+        open={isDrawerOpen}
       >
         <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
+          <IconButton onClick={() => setIsDrawerOpen(false)}>
             <ChevronLeftIcon />
           </IconButton>
         </DrawerHeader>
         <Divider />
         {drawerContent instanceof Function
-          ? drawerContent(setOpen)
+          ? drawerContent(setIsDrawerOpen)
           : drawerContent}
       </Drawer>
-      <Main open={open}>
+      <Main isDrawerOpen={isDrawerOpen}>
         <DrawerHeader />
         {children}
       </Main>
     </Box>
   );
 }
+
+const Main = styled("main", {
+  shouldForwardProp: (prop) => prop !== "isDrawerOpen",
+})<{
+  isDrawerOpen?: boolean;
+}>(({ theme, isDrawerOpen }) => ({
+  flexGrow: 1,
+  transition: theme.transitions.create("margin", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  marginLeft: `-${drawerWidth}px`,
+  ...(isDrawerOpen && {
+    transition: theme.transitions.create("margin", {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    marginLeft: 0,
+  }),
+}));
+
+interface AppBarProps extends MuiAppBarProps {
+  isDrawerOpen?: boolean;
+}
+const AppBar = styled(MuiAppBar, {
+  shouldForwardProp: (prop) => prop !== "isDrawerOpen",
+})<AppBarProps>(({ theme, isDrawerOpen }) => ({
+  transition: theme.transitions.create(["margin", "width"], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(isDrawerOpen && {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: `${drawerWidth}px`,
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  }),
+}));
+
+const DrawerHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+  justifyContent: "flex-end",
+}));

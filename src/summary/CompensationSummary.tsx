@@ -1,4 +1,4 @@
-import { Box, Button, styled } from "@mui/material";
+import { Alert, Box, Button, styled } from "@mui/material";
 import ADPPayslip from "src/compensation/income/payslip/adp-payslip";
 import Payslip from "src/compensation/income/payslip/payslip";
 import PageStructure, { DrawerContentRenderer } from "src/pages/PageStructure";
@@ -21,7 +21,6 @@ const VisuallyHiddenInput = styled("input")({
 const PAYSLIP_PROVIDER_CLASS: { create(file: File): Promise<Payslip> } =
   ADPPayslip;
 
-// TODO gotta clean up this component
 export default function CompensationSummary() {
   const dispatch = useUKPayDispatch();
 
@@ -40,13 +39,20 @@ export default function CompensationSummary() {
     await Promise.all(payslipCreators);
   }
 
-  const drawerContent = ((setOpen) => (
-    <>
+  const drawerContent = ((setIsDrawerOpen) => (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        margin: 1,
+        gap: 1,
+      }}
+    >
       <Button
         component="label"
         variant="contained"
         size="small"
-        sx={{ margin: 2 }}
         startIcon={<CloudUploadIcon />}
       >
         Upload payslips
@@ -55,16 +61,16 @@ export default function CompensationSummary() {
           accept=".pdf"
           multiple
           onChange={(event) => {
-            handleFileUpload(event).then(() => setOpen(false));
+            handleFileUpload(event).then(() => setIsDrawerOpen(false));
           }}
         />
       </Button>
-      <Box sx={{ margin: 2 }}>
-        All payslips are processed locally in your browser. No data is sent to
-        any server. Feel free to turn off your internet connection before
-        uploading your payslips.
-      </Box>
-    </>
+      <Alert severity="info">
+        Payslips are processed locally in your browser and no data is sent to
+        any server.
+      </Alert>
+      <Alert severity="info">You may turn off your internet connection.</Alert>
+    </Box>
   )) as DrawerContentRenderer;
 
   return (
